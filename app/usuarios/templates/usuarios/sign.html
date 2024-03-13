@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'usuarios/style.css' %}">
+    <title>TFG</title>
+</head>
+
+<body>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form method="POST" autocomplete="off" id="formregister">
+                {% csrf_token %}
+                <h1>Crear Cuenta</h1>
+                <br>
+                <div class="input-box">
+                    <input type="text" placeholder="Nombre completo" name="nombre">
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Nombre usuario" name="username">
+                </div>
+                <div class="input-box">
+                    <input type="email" placeholder="Email" name="email">
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Contraseña" name="password1" id="password1">
+                    <img src="{% static 'usuarios/img/eyeclose.png' %}" id="eye1">
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Repetir contraseña" name="password2" id="password2">
+                    <img src="{% static 'usuarios/img/eyeclose.png' %}" id="eye2">
+                </div>
+                <button type="submit" name="register">REGISTRARSE</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form method="POST" autocomplete="off" id="formlogin">
+                {% csrf_token %}
+                <h1>Iniciar Sesión</h1>
+                <br>
+                <div class="input-box">
+                    <input type="username" placeholder="Nombre de usuario" name="username">
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Contraseña" name="password" id="password">
+                    <img src="{% static 'usuarios/img/eyeclose.png' %}" id="eye">
+                </div>
+                <a href="#">Forget Your Password?</a>
+                <button type="submit" name="login">ENTRAR</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Hola!</h1>
+                    <p>Accede a tu cuenta personal.</p>
+                    <button class="hidden" id="login">INICIAR SESION</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Bienvenido!</h1>
+                    <p>Eres nuevo? Registrate para hacer uso de las funcionalidades de esta web.</p>
+                    <button class="hidden" id="register">REGISTRARSE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% load static %}
+    <script src="{% static 'usuarios/script.js' %}"></script>
+</body>
+
+</html>

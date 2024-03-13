@@ -8,34 +8,16 @@ from django.contrib.auth import authenticate, login, logout
 def homepage(request):
     return render(request, 'usuarios/index.html')
 
-def register(request):
+def sign(request):
 
-    form = CreateUserForm()
+    form1 = LoginForm()
+    form2 = CreateUserForm()
 
-    if request.method == "POST":
+    if request.method == 'POST' and 'login' in request.POST:
 
-        form = CreateUserForm(request.POST)
+        form1 = LoginForm(request, data=request.POST)
 
-        if form.is_valid():
-
-            form.save()
-
-            return redirect("login")
-
-
-    context = {'registerform':form}
-
-    return render(request, 'usuarios/register.html', context=context)
-
-def login(request):
-
-    form = LoginForm()
-
-    if request.method == 'POST':
-
-        form = LoginForm(request, data=request.POST)
-
-        if form.is_valid():
+        if form1.is_valid():
 
             username = request.POST.get('username')
             password = request.POST.get('password')
@@ -48,10 +30,27 @@ def login(request):
 
                 return redirect("dashboard")
 
+    elif request.method == "POST" and 'register' in request.POST:
 
-    context = {'loginform':form}
+        form2 = CreateUserForm(request.POST)
 
-    return render(request, 'usuarios/login.html', context=context)
+        if form2.is_valid():
+            form2.save()
+            username = request.POST.get('username')
+            password = request.POST.get('password1')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                auth.login(request, user)
+                return redirect("dashboard")
+
+    else:
+        return render(request, 'usuarios/sign.html', {'loginform':form1, 'registerform':form2})
+    
+    return render(request, 'usuarios/sign.html', {'loginform':form1, 'registerform':form2})
+
+    
 
 def dashboard(request):
     return render(request, 'usuarios/dashboard.html')
@@ -62,7 +61,7 @@ def logout(request):
 
     return redirect("")
 
-@login_required(login_url="login")
+@login_required(login_url="sign")
 def dashboard(request):
 
     return render(request, 'usuarios/dashboard.html')
