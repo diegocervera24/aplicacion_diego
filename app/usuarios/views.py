@@ -3,7 +3,9 @@ from . forms import CreateUserForm, LoginForm
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import auth
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
+from django.contrib import messages
+
 
 def homepage(request):
     return render(request, 'usuarios/index.html')
@@ -25,27 +27,36 @@ def sign(request):
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
-
                 auth.login(request, user)
-
                 return redirect("dashboard")
-
+        else:
+                messages.add_message(request=request,level=messages.ERROR, message="No existen usuarios con esa contraseña.")
+    
     elif request.method == "POST" and 'register' in request.POST:
 
         form2 = CreateUserForm(request.POST)
+        username = request.POST.get('username')
+        password = request.POST.get('password1')
+        password2 = request.POST.get('password2')
 
         if form2.is_valid():
             form2.save()
-            username = request.POST.get('username')
-            password = request.POST.get('password1')
-
+            
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
                 auth.login(request, user)
                 return redirect("dashboard")
+            
+        elif password != password2:
+                context=messages.add_message(request=request,level=messages.ERROR, message="Las contraseñas no coinciden.")
+                return render(request, 'usuarios/register.html', {'loginform':form1, 'registerform':form2,'context':context})
 
+        else:
+            context=messages.add_message(request=request,level=messages.ERROR, message="Ya hay un usuario registrado con ese nombre de ususario y/o email.")
+            return render(request, 'usuarios/register.html', {'loginform':form1, 'registerform':form2,'context':context})
     else:
+        
         return render(request, 'usuarios/sign.html', {'loginform':form1, 'registerform':form2})
     
     return render(request, 'usuarios/sign.html', {'loginform':form1, 'registerform':form2})
