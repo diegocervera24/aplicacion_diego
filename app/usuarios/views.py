@@ -6,10 +6,6 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib import messages
 
-
-def homepage(request):
-    return render(request, 'usuarios/index.html')
-
 def sign(request):
 
     form1 = LoginForm()
@@ -28,7 +24,7 @@ def sign(request):
 
             if user is not None:
                 auth.login(request, user)
-                return redirect("dashboard")
+                return redirect("/temario/")
         else:
                 messages.add_message(request=request,level=messages.ERROR, message="No existen usuarios con esa contraseña.")
     
@@ -46,7 +42,7 @@ def sign(request):
 
             if user is not None:
                 auth.login(request, user)
-                return redirect("dashboard")
+                return redirect("/temario/")
             
         elif password != password2:
                 context=messages.add_message(request=request,level=messages.ERROR, message="Las contraseñas no coinciden.")
@@ -61,18 +57,3 @@ def sign(request):
     
     return render(request, 'usuarios/sign.html', {'loginform':form1, 'registerform':form2})
 
-    
-
-def dashboard(request):
-    return render(request, 'usuarios/dashboard.html')
-
-def logout(request):
-
-    auth.logout(request)
-
-    return redirect("")
-
-@login_required(login_url="sign")
-def dashboard(request):
-
-    return render(request, 'usuarios/dashboard.html')

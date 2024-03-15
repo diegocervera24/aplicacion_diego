@@ -1,0 +1,59 @@
+#home {
+    background: url('../oposicion/img/home.jpg') no-repeat center center;
+    background-size: cover;
+    vertical-align: middle;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    padding-top: 12em;
+    text-align: center;
+  }
+
+  .overlay{
+    background: #536976;
+    background: -webkit-linear-gradient(to right, #292E49, #536976);
+    background: linear-gradient(to right, #2c6473, #88b0c8);
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .info{
+    font-weight: 300;
+    line-height: normal;
+    color: white;
+  }
+
+  .acceder{
+    background-color: #1d5e6b;
+  }
+
+  .navegacion.show{
+    left: -15px;
+  }
+
+  .menu{
+    right: 80px;
+  }
+
+  .titulo{
+    display: flex;
+    margin-left: 100px;
+  }
+
+  .nav-link{
+    margin: 10px;
+    padding-right:10px;
+  }

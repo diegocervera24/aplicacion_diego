@@ -16,6 +16,9 @@
     <div class="container active" id="container">
         <div class="form-container sign-up">
             <form method="POST" autocomplete="off" id="formregister">
+                <a href="/">
+                    <img src="{% static 'usuarios/img/cross.png' %}" class="cross">
+                </a>
                 {% csrf_token %}
                 <h1>Crear Cuenta</h1>
                 <br>
@@ -74,6 +77,9 @@
                     <button class="hidden" id="login">INICIAR SESION</button>
                 </div>
                 <div class="toggle-panel toggle-right">
+                    <a href="/">
+                        <img src="{% static 'usuarios/img/cross.png' %}" class="cross">
+                    </a>
                     <h1>Bienvenido!</h1>
                     <p>Eres nuevo? Registrate para hacer uso de las funcionalidades de esta web.</p>
                     <button class="hidden" id="register">REGISTRARSE</button>        
