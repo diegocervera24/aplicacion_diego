@@ -224,3 +224,7 @@ body{
     top: 10px;
     cursor: pointer;
  }
+
+ #complete{
+    font-size: .875em;
+ }
