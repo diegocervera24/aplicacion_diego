@@ -57,3 +57,159 @@
     margin: 10px;
     padding-right:10px;
   }
+
+
+.contenedor{
+  justify-content: center !important;
+  display: flex !important;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x)* .5);
+  padding-left: calc(var(--bs-gutter-x)* .5);
+  
+}
+
+.padding {
+    padding: 3rem !important;
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 20px 0 rgba(69,90,100,0.08);
+    box-shadow: 0 1px 20px 0 rgba(69,90,100,0.08);
+    border: none;
+    margin-bottom: 30px;
+}
+
+.user-profile {
+    border-radius: 5px;
+}
+
+.fondoPerfil {
+    background: -webkit-gradient(linear, left top, right top, from(#2fb6b8), to(#54cdb2));
+    background: linear-gradient(to right, #54cdb2, #2fb6b8);
+    padding: 20px 0;
+    border-radius: 5px;
+}
+
+.card-block {
+    padding: 1.25rem;
+}
+
+.textoFondoPerfil{
+  color: white;
+  text-align: center !important;
+}
+
+.img-radius {
+    border-radius: 5px;
+}
+
+h6 {
+    font-size: 14px;
+}
+
+.card .card-block p {
+    line-height: 25px;
+}
+
+.textoPerfil {
+    color: #919aa3 !important;
+}
+
+.linea {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.titulosPerfil {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.boton{
+  background-color: #54cdb2;
+  color: #fff;
+  font-size: 12px;
+  padding: 10px 45px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  flex: 1;
+  margin: 0 5px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+}
+
+.eliminar{
+  background-color: #ba3636;
+}
+
+.contenedorBoton{
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between
+}
+
+#ocultar{
+  display: none;
+}
+
+#eye1{
+  cursor: pointer;
+}
+
+#eye2{
+  cursor: pointer;
+}
+
+.close {
+  position: absolute;
+  right: 5px;
+  border: none;
+  background-color: white;
+}
+
+.bloque{
+  margin: 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 10px;
+}
+
+.card{
+  margin: 20px;
+}
+
+.card-body{
+  display: flex;
+  justify-content: center;
+}
+
+.contenedorBotonTemario{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.botonTemario{
+  background-color: #54cdb2;
+  color: #fff;
+  font-size: 12px;
+  padding: 10px 45px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  margin: 0 5px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+}

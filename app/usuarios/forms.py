@@ -20,3 +20,11 @@ class LoginForm(AuthenticationForm):
 
     username = forms.CharField(widget=TextInput())
     password = forms.CharField(widget=PasswordInput())
+
+class ProfileForm(forms.ModelForm):
+    password1 = forms.CharField(widget=PasswordInput(),required=False)
+    password2 = forms.CharField(widget=PasswordInput(),required=False)
+    
+    class Meta:
+        model = User
+        fields = ['nombre','email', 'username', 'password1', 'password2']

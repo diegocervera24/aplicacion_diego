@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from . forms import CreateUserForm, LoginForm
+from . forms import CreateUserForm, LoginForm, ProfileForm
 
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from usuarios.models import User
+from django.contrib.auth.decorators import login_required
 
 def sign(request):
 
@@ -72,4 +73,48 @@ def sign(request):
     return render(request, 'usuarios/sign.html', {'loginform':form1, 'registerform':form2})
 
 
+@login_required(login_url="sign")
+def perfil(request):
+    return render(request, 'usuarios/perfil.html')
+
+@login_required(login_url="sign")
+def editarPerfil(request):
+    user=request.user.username
+    profile=User.objects.get(username=user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile.nombre = form.cleaned_data.get('nombre')
+            profile.email = form.cleaned_data.get('email')
+            password1 = form.cleaned_data.get('password1')
+            password2 = form.cleaned_data.get('password2')
+
+            if password1 != password2:
+                context=messages.add_message(request=request,level=messages.ERROR, message="Las contraseñas no coinciden.")
+                return render(request, 'usuarios/editarPerfil.html', {'form':form, 'context':context})
+        
+
+            if not password1 or not password2:
+                profile.save()
+                return redirect('perfil')
+            else:
+                profile.set_password(password1) 
+                profile.save()
+                return redirect('perfil')
+        else:
+             messages.add_message(request=request,level=messages.ERROR, message="Ya hay una cuenta con ese correo.")
+    else:
+        form = ProfileForm(instance=profile)
+    
+    context={'form':form}
+
+    return render(request, 'usuarios/editarPerfil.html',context)
+
+@login_required(login_url="sign")
+def eliminarPerfil(request):
+     user = request.user.username
+     usuario = User.objects.get(username=user)
+     usuario.delete()
      
+     return redirect('sign')

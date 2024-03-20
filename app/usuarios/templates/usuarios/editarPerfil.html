@@ -1,0 +1,78 @@
+{% extends 'oposicion/base.html' %}
+{% load static %}
+
+{% block section1 %}
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="{% url 'temario' %}">Temario</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Pruebas</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Progreso</a>
+</li>
+{% endblock section1 %}
+
+{% block section2 %}
+
+<div class="padding">
+    <div class="row contenedor">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="fondoPerfil">
+                    <div class="card-block textoFondoPerfil">
+                        <div>
+                            <img src="{% static 'usuarios/img/perfil.png' %}" class="img-radius" alt="User-Profile-Image">
+                        </div>
+                        <h6 class="titulosPerfil">{{user.nombre}}</h6>
+                    </div>
+                </div>
+                <div class="card-block">
+                    <h6 class="linea titulosPerfil">Datos del usuario</h6>
+                    <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="titulosPerfil" for="username">Nombre completo:</label><br>
+                                <input type="text" name="nombre" value="{{user.nombre}}">
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="titulosPerfil" for="email">Email:</label><br>
+                                <input type="email" name="email" value="{{user.email}}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="titulosPerfil" for="password1">Contraseña nueva:</label><br>
+                                <input type="password" name="password1" id="password1">
+                                <img src="{% static 'usuarios/img/eyeclose.png' %}" id="eye1">
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="titulosPerfil" for="password2">Repita contraseña:</label><br>
+                                <input type="password" name="password2" id="password2">
+                                <img src="{% static 'usuarios/img/eyeclose.png' %}" id="eye2">
+                            </div>
+                            <div id="ocultar">
+                                <label class="titulosPerfil" for="nombre">Usuario:</label><br>
+                                {{form.username}}
+                            </div>
+                        </div>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="mensaje">
+                                    <small class="text-danger">{{ message }}</small>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="contenedorBoton">
+                            <button type="submit" class="boton" name="editarPerfil">GUARDAR CAMBIOS</button>                            
+                            <a href="{% url 'perfil' %}" class="boton eliminar">CANCELAR CAMBIOS</a>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock section2 %}

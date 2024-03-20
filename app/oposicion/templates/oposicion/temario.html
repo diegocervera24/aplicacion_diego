@@ -12,5 +12,28 @@
 </li>
 {% endblock section1 %}
 
+{% block section2 %}
+{% load static %}
+<div class="row bloque">
+  {% if nombreOposiciones %}
+    {% for NomOposicion in nombreOposiciones %}
+    <div class="card" style="width: 18rem;">
+      <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
+      <div class="card-body">
+        <p class="card-text">{{NomOposicion}}</p>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="card-text">No hay temario subido.</p>
+  {% endif %}
+
+  
+</div>
+<div class="contenedorBotonTemario">
+  <a href="{% url 'editarPerfil' %}" class="botonTemario">AÑADIR TEMARIO</a>
+</div>
+{% endblock section2 %}
+
 
 
