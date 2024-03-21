@@ -31,9 +31,45 @@
   
 </div>
 <div class="contenedorBotonTemario">
-  <a href="{% url 'editarPerfil' %}" class="botonTemario">AÑADIR TEMARIO</a>
+  <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="botonTemario">AÑADIR TEMARIO</button>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Temario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" id="formtemario" enctype="multipart/form-data">
+        {% csrf_token %}
+      <div class="modal-body">
+          <div class="mb-3">
+            <label for="NomTemario" class="form-label">Título</label>
+            <input type="text" class="form-control" name="NomTemario" required>
+          </div>
+          <div class="mb-3">
+            <label for="IdOposicion" class="form-label">Oposición</label>
+            <select class="form-select" name="IdOposicion" required>
+              <option selected></option>
+              {% for oposicion in all_oposicion %}
+                <option value="{{oposicion.id}}" name="IdOposicion">{{oposicion.NomOposicion}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <div class="mb-3">
+              <label for="formFile" class="form-label">Elige archivo pdf</label>
+              <input class="form-control" type="file" name="Archivo">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="reset" class="botonCancelar" data-bs-dismiss="modal">CANCELAR</button>
+        <button type="submit" class="botonTemario" name="añadirTemario">AÑADIR</button>
+      </div>
+    </form>
+    </div>
+  </div>
 </div>
 {% endblock section2 %}
-
-
-

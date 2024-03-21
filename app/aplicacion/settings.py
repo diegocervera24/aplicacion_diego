@@ -152,3 +152,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'diegocervera24@gmail.com'
 EMAIL_HOST_PASSWORD = 'hadc aceq gczy aimw'
 
+MEDIA_URL = '/archivos/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

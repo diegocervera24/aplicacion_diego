@@ -4,7 +4,7 @@ from . import models
 # Register your models here.
 @admin.register(models.Temario)
 class Temario(admin.ModelAdmin):
-    list_display = ('NomTemario', 'NumPaginas', 'TemVisible', 'NomUsuario')
+    list_display = ('NomTemario', 'NumPaginas', 'TemVisible','Archivo', 'NomUsuario', 'IdOposicion')
     search_fields = ('NomTemario'),
 
 @admin.register(models.Oposicion)
@@ -21,10 +21,6 @@ class Prueba(admin.ModelAdmin):
 class Progreso(admin.ModelAdmin):
     list_display = ('id', 'Nota', 'PregAcertadas', 'PregFalladas','PregBlanco','Tiempo','IdPrueba')
     search_fields = ('id'),
-
-@admin.register(models.Agrupa_en)
-class Agrupa_en(admin.ModelAdmin):
-    list_display = ('IdTemario','IdOposicion')
 
 @admin.register(models.Formado_por)
 class Formado_por(admin.ModelAdmin):

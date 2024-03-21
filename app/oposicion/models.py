@@ -1,18 +1,6 @@
 from django.db import models
 from usuarios.models import User
 
-class Temario(models.Model):
-    NomTemario = models.CharField(null=False, max_length=50)
-    NumPaginas = models.DecimalField(null=False, max_digits=4, decimal_places=0)
-    TemVisible = models.BooleanField(null=False, default=True)
-    NomUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.NomTemario
-    
-    class Meta:
-        db_table = "TEMARIO"
-    
 class Oposicion(models.Model):
     NomOposicion = models.CharField(null=False, max_length=50)
     OpoVisible = models.BooleanField(null=False, default=True)
@@ -22,6 +10,21 @@ class Oposicion(models.Model):
 
     class Meta:
         db_table = "OPOSICION"
+
+
+class Temario(models.Model):
+    NomTemario = models.CharField(null=False, max_length=50)
+    NumPaginas = models.DecimalField(null=False, max_digits=4, decimal_places=0)
+    TemVisible = models.BooleanField(null=False, default=True)
+    Archivo = models.FileField(upload_to='temario/', null=False, default='')
+    NomUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    IdOposicion = models.ForeignKey(Oposicion, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.NomTemario
+    
+    class Meta:
+        db_table = "TEMARIO"
     
 class Prueba(models.Model):
     NomPrueba = models.CharField(null=False, max_length=50)
@@ -44,19 +47,6 @@ class Progreso(models.Model):
 
     class Meta:
         db_table = "PROGRESO" 
-
-class Agrupa_en(models.Model):
-    IdTemario = models.ForeignKey(Temario, on_delete=models.CASCADE)
-    IdOposicion = models.ForeignKey(Oposicion, on_delete=models.CASCADE)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['IdTemario', 'IdOposicion'], name='pk_IdTemario_IdOposicion'
-            )
-        ]
-
-        db_table = "AGRUPA_EN"
 
 class Formado_por(models.Model):
     IdTemario = models.ForeignKey(Temario, on_delete=models.CASCADE)
