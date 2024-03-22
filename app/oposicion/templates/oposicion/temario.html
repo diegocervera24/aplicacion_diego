@@ -2,7 +2,7 @@
 
 {% block section1 %}
 <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Temario</a>
+    <a class="nav-link active" aria-current="page" href="{% url 'temario' %}">Temario</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Pruebas</a>
@@ -16,11 +16,11 @@
 {% load static %}
 <div class="row bloque">
   {% if nombreOposiciones %}
-    {% for NomOposicion in nombreOposiciones %}
+  {% for id, NomOposicion in nombreOposiciones %}
     <div class="card" style="width: 18rem;">
       <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <p class="card-text">{{NomOposicion}}</p>
+        <a class="card-text enlaceTemario" href="{% url 'mostrar_temario' id=id %}">{{NomOposicion}}</a>
       </div>
     </div>
     {% endfor %}
@@ -32,7 +32,16 @@
 </div>
 <div class="contenedorBotonTemario">
   <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="botonTemario">AÑADIR TEMARIO</button>
+  {% if messages %}
+  {% for message in messages %}
+      <div class="mensaje">
+          <small class="text-danger">{{ message }}</small>
+      </div>
+  {% endfor %}
+  {% endif %}
 </div>
+
+
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">

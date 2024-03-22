@@ -188,6 +188,11 @@ h6 {
 .card-body{
   display: flex;
   justify-content: center;
+  flex-direction: column
+}
+
+.card-text{
+  margin-bottom: 0;
 }
 
 .contenedorBotonTemario{
@@ -195,6 +200,7 @@ h6 {
   justify-content: center;
   align-items: center;
   margin-bottom: 50px;
+  flex-direction: column
 }
 
 .botonTemario{
@@ -233,4 +239,17 @@ h6 {
 
 .modal-footer{
   justify-content: center;
+}
+
+.enlaceTemario{
+  text-decoration: none;
+  color: black;
+  width: 100%;
+  display: flex;
+}
+
+.trash{
+  position: absolute;
+  right: 15px;
+  top:5px;
 }
