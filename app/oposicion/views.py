@@ -7,7 +7,10 @@ from oposicion.models import Temario, Oposicion
 from . forms import TemarioForm
 
 def homepage(request):
-    return render(request, 'oposicion/index.html')
+     if request.user.is_authenticated:
+        return redirect('temario')
+     else:
+        return render(request, 'oposicion/index.html')
 
 @login_required(login_url="sign")
 def temario(request):
