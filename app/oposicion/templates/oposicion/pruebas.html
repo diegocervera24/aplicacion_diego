@@ -2,10 +2,10 @@
 
 {% block section1 %}
 <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'temario' %}">Temario</a>
+    <a class="nav-link" href="{% url 'temario' %}">Temario</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'pruebas' %}">Pruebas</a>
+    <a class="nav-link active" aria-current="page"  href="{% url 'pruebas' %}">Pruebas</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Progreso</a>
@@ -18,29 +18,27 @@
 <div class="row breadcrumb">
   <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page">Temario</li>
+      <li class="breadcrumb-item active" aria-current="page">Pruebas</li>
     </ol>
   </div>
 </div>
 <div class="row bloque">
-  {% if nombreOposiciones %}
-  {% for id, NomOposicion,cantidad in nombreOposiciones %}
+  {% if all_pruebas %}
+  {% for id,NomOposicion in nombreOposiciones %}
     <div class="card" style="width: 18rem;">
       <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <a class="card-text enlaceTemario" href="{% url 'mostrar_temario' id=id %}">{{NomOposicion}}</a>
-        <p class="cantidad">{{cantidad}} documento/s</p>
+        <a class="card-text enlaceTemario" href="{% url 'mostrar_prueba' id=id %}">{{NomOposicion}}</a>
       </div>
     </div>
     {% endfor %}
     {% else %}
-    <p class="card-text">No hay temario subido.</p>
+    <p class="card-text">No hay pruebas creadas.</p>
   {% endif %}
-
-  
+</div>
 </div>
 <div class="contenedorBotonTemario">
-  <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="botonTemario">AÑADIR TEMARIO</button>
+  <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="botonTemario">CREAR PRUEBA</button>
   {% if messages %}
   {% for message in messages %}
       <div class="mensaje">
@@ -54,7 +52,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Temario</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form method="POST" id="formtemario" enctype="multipart/form-data">
@@ -73,9 +71,25 @@
             </select>
           </div>
           <div class="mb-3">
+            <label for="IdTemario" class="form-label">Temario</label>
+            <select class="form-select select2-temario" name="IdTemario" id="IdTemario" style="width: 100%;" multiple required>
+              {% for oposicion in all_oposicion %}
+              <optgroup label="{{oposicion.NomOposicion}}">
+                {% for id, NomTemario, IdOposicion in all_temario %}
+                  {% if IdOposicion == oposicion.id %}
+                    <option value="{{ id }}" name="IdTemario">{{ NomTemario }}</option>
+                  {% endif %}
+                {% endfor %}
+            </optgroup>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
             <div class="mb-3">
-              <label for="formFile" class="form-label">Elige archivo pdf</label>
-              <input class="form-control" type="file" name="Archivo">
+              <label for="NumPreguntas" class="form-label">Número de preguntas
+                <p id="numero">55</p>
+              </label>
+              <input type="range" class="form-range" min="10" max="100" id="customRange3" name="NumPreguntas">
             </div>
           </div>
       </div>
@@ -88,4 +102,16 @@
   </div>
 </div>
 </div>
+
+<script>
+let barraDeTiempo = document.getElementById('customRange3');
+let cajaNumeral = document.getElementById('numero');
+// Asignar evento a barra
+barraDeTiempo.addEventListener('input', mostrar);
+// Función para actualizar
+function mostrar() {
+    // Asignar a caja el valor de la barra
+    cajaNumeral.innerHTML = barraDeTiempo.value;
+}
+</script>
 {% endblock section2 %}

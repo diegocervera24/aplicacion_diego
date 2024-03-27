@@ -120,3 +120,8 @@ def eliminarPerfil(request):
      usuario.delete()
      
      return redirect('sign')
+
+def logout(request):
+
+    auth.logout(request)
+    return redirect("/")

@@ -1,0 +1,38 @@
+{
+    "examen": {
+      "titulo": "Examen de Matemáticas",
+      "preguntas": [
+        {
+          "id": 1,
+          "texto": "¿Cuál es la suma de 2 + 2?",
+          "opciones": ["3", "4", "5", "6"],
+          "respuesta_correcta": "4"
+        },
+        {
+          "id": 2,
+          "texto": "¿Cuánto es 5 multiplicado por 3?",
+          "opciones": ["10", "12", "15", "20"],
+          "respuesta_correcta": "15"
+        },
+        {
+          "id": 3,
+          "texto": "¿Cuál es la raíz cuadrada de 25?",
+          "opciones": ["3", "5", "7", "10"],
+          "respuesta_correcta": "5"
+        },
+        {
+          "id": 4,
+          "texto": "¿Cuál es la raíz cuadrada de 25?",
+          "opciones": ["3", "5", "7", "10"],
+          "respuesta_correcta": "5"
+        },
+        {
+          "id": 5,
+          "texto": "¿Cuál es la raíz cuadrada de 25?",
+          "opciones": ["3", "5", "7", "10"],
+          "respuesta_correcta": "5"
+        }
+      ]
+    }
+  }
+  

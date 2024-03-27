@@ -16,6 +16,7 @@
     text-align: center;
   }
 
+
   .overlay{
     background: #536976;
     background: -webkit-linear-gradient(to right, #292E49, #536976);
@@ -176,9 +177,14 @@ h6 {
 
 .bloque{
   margin: 80px;
+  margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 10px;
+}
+
+.breadcrumb-item{
+  font-size: 20px;
 }
 
 .card{
@@ -245,11 +251,78 @@ h6 {
   text-decoration: none;
   color: black;
   width: 100%;
-  display: flex;
 }
 
 .trash{
   position: absolute;
   right: 15px;
   top:5px;
+}
+
+.breadcrumb{
+  margin-left: 50px;
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+.cantidad{
+  display: flex;
+  justify-content: center;
+  font-size: 12px;
+  margin-bottom: 0;
+  color: #9db5da8c;
+}
+
+.form-control{
+  border: 1px solid #aaa;
+  padding: 0 5px 5px 0;
+  min-height: 32px;
+}
+
+
+.formulario{
+  width: 100%;
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.sidebar {
+  background-color: #f9f9f9;
+  padding: 20px;
+  position: fixed;
+  overflow-y: auto;
+  text-align: center;
+  margin-top: 50px;
+
+}
+
+.question {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap; /* Para permitir que los elementos se envuelvan a la siguiente línea */
+  width: 200px;
+}
+
+.question-link {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  border: 1px solid;
+  border-color: black;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
+  margin: 5px;
+  line-height: 40px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.formularioPrueba{
+  width: 100%;
 }

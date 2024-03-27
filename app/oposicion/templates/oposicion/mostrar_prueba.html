@@ -1,10 +1,11 @@
 {% extends 'oposicion/base.html' %}
+
 {% block section1 %}
 <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'temario' %}">Temario</a>
+    <a class="nav-link" href="{% url 'temario' %}">Temario</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'pruebas' %}">Pruebas</a>
+    <a class="nav-link active" aria-current="page"  href="{% url 'pruebas' %}">Pruebas</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Progreso</a>
@@ -17,39 +18,38 @@
 <div class="row breadcrumb">
   <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'temario' %}">Temario</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'pruebas' %}">Pruebas</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{oposicion.NomOposicion}}</li>
     </ol>
   </div>
 </div>
 <div class="row bloque">
-  {% if temarios %}
-    {% for temario in temarios %}
+  {% if pruebas %}
+    {% for id,NomPrueba in pruebas %}
     <div class="card" style="width: 18rem;">
       <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <a class="card-text enlaceTemario" href="{{temario.Archivo}}">{{temario.NomTemario}}</a>
-        <p class="cantidad">{{temario.NumPaginas}} página/s</p>
-        <button type="button" class="btn btn-danger trash" data-toggle="modal" data-target="#exampleModalCenter{{ temario.id }}">
+        <a class="card-text enlaceTemario" href="#">{{NomPrueba}}</a>
+        <button type="button" class="btn btn-danger trash" data-toggle="modal" data-target="#exampleModalCenter{{ id }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
             </svg>
         </button>
-        <div class="modal fade" id="exampleModalCenter{{ temario.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="exampleModalCenter{{ id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Eliminar temario</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Eliminar prueba</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <h2 aria-hidden="true">&times;</h2>
                 </button>
               </div>
               <div class="modal-body">
-                Desea eliminar el temario seleccionado permanentemente?
+                Desea eliminar la prueba seleccionada permanentemente?
               </div>
               <div class="modal-footer">
-                <a href="{% url 'eliminarTemario' temario.id %}" class="boton eliminar">ELIMINAR TEMARIO</a>
+                <a href="{% url 'eliminarPrueba' id %}" class="boton eliminar">ELIMINAR PRUEBA</a>
               </div>
             </div>
           </div>
@@ -60,7 +60,7 @@
     </div>
     {% endfor %}
     {% else %}
-    <p class="card-text">No hay temario subido.</p>
+    <p class="card-text">No hay pruebas creadas.</p>
   {% endif %}
 </div>
 {% endblock section2 %}

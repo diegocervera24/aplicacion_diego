@@ -1,0 +1,63 @@
+{% extends 'oposicion/base.html' %}
+
+{% block section1 %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'temario' %}">Temario</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page"  href="{% url 'pruebas' %}">Pruebas</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Progreso</a>
+</li>
+{% endblock section1 %}
+
+{% block section2 %}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-9">
+        <form method="post" class="formulario" id="pruebaForm">
+            {% csrf_token %}
+                {% for pregunta in preguntas %}
+                <div class="card col-9 fromularioPrueba">
+                    <div class="card-header">
+                        <h5 id="pregunta{{pregunta.id}}">Pregunta {{pregunta.id}}</h5>
+                    </div>
+                    <div class="card-body">
+                        <fieldset>
+                            <h6 class="card-title">{{ pregunta.texto }}</h6>
+                            {% for opcion in pregunta.opciones %}
+                                <label for="id_pregunta_{{ pregunta.id }}">
+                                    <input type="radio" name="pregunta_{{ pregunta.id }}" id="pregunta_{{ pregunta.id }}" value="{{ opcion }}">
+                                    {{ opcion }}
+                                </label>
+                                <br>
+                            {% endfor %}
+                        </fieldset>
+                                        
+                    </div>
+                  </div>
+                    
+                {% endfor %}
+        </form>
+      </div>
+      <div class="col-2">
+        <div class="sidebar">
+            <p>Preguntas</p>
+            <div class="question">
+                {% for pregunta in preguntas %}
+                <a href="#pregunta{{pregunta.id}}" class="question-link">{{pregunta.id}}</a>
+                {% endfor %}
+            </div>
+            
+            <button type="submit" form="pruebaForm" class="botonTemario" name="añadirTemario">FINALIZAR INTENTO</button>
+        </div>
+      </div>
+    </div>
+  </div>   
+    
+</div>
+
+{% endblock section2 %}
