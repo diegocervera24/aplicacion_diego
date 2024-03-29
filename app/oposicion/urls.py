@@ -7,12 +7,11 @@ urlpatterns = [
     path('',views.homepage, name="homepage"),
     path('temario/',views.temario, name="temario"),
     path('temario/<int:id>/',views.mostrar_temario, name="mostrar_temario"),
+    path('temario/<int:id>/<path:path>', views.ver_pdf, name='ver_pdf'),
     path('eliminartemario/<int:id>/',views.eliminarTemario, name="eliminarTemario"),
     path('pruebas/',views.pruebas, name="pruebas"),
     path('pruebas/<int:id>/',views.mostrar_prueba, name="mostrar_prueba"),
     path('pruebas/eliminarprueba/<int:id>/',views.eliminarPrueba, name="eliminarPrueba"),
     path('pruebas/realizarprueba/<str:titulo>/',views.realizarPrueba, name="realizarPrueba"),
+    path('progreso/',views.progreso, name="progreso"),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

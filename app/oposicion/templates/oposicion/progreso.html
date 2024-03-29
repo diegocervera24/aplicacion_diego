@@ -1,0 +1,13 @@
+{% extends 'oposicion/base.html' %}
+
+{% block section1 %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'temario' %}">Temario</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'pruebas' %}">Pruebas</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'progreso' %}">Progreso</a>
+</li>
+{% endblock section1 %}

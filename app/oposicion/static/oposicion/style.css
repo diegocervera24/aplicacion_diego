@@ -285,7 +285,6 @@ h6 {
   display: flex;
   margin: 0;
   flex-direction: column;
-  align-items: center;
   margin-top: 20px;
   margin-bottom: 50px;
 }
@@ -293,10 +292,11 @@ h6 {
 .sidebar {
   background-color: #f9f9f9;
   padding: 20px;
-  position: fixed;
   overflow-y: auto;
   text-align: center;
   margin-top: 50px;
+  display: inline-table;
+  width: 100%;
 
 }
 
@@ -325,4 +325,63 @@ h6 {
 
 .formularioPrueba{
   width: 100%;
+}
+
+.respuesta{
+  margin-left: 20px;
+}
+
+.green{
+  background-color: #54cdb2;
+}
+
+.red{
+  background-color: #cd243a;
+}
+
+.labelPrueba{
+  display: inline;
+}
+
+.verTemario{
+  text-align: center;
+}
+
+.popover-body{
+  padding: 0;
+}
+
+.custom-popover{
+    --bs-list-group-color: none; 
+    --bs-list-group-bg: none; 
+    --bs-list-group-border-color: none; 
+    --bs-list-group-border-width: var(--bs-border-width); 
+    --bs-list-group-border-radius: var(--bs-border-radius);
+}
+
+#list-group-item{
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.tituloPrueba{
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+.notaPrueba{
+  text-align: center;
+  font-size: 18px;
+}
+
+.timer{
+  text-align: center;
+}
+
+.clock{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

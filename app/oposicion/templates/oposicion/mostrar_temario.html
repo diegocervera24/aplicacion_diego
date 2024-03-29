@@ -7,7 +7,7 @@
     <a class="nav-link" href="{% url 'pruebas' %}">Pruebas</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Progreso</a>
+    <a class="nav-link" href="{% url 'progreso' %}">Progreso</a>
 </li>
 {% endblock section1 %}
 
@@ -28,7 +28,7 @@
     <div class="card" style="width: 18rem;">
       <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <a class="card-text enlaceTemario" href="{{temario.Archivo}}">{{temario.NomTemario}}</a>
+        <a class="card-text enlaceTemario" href="{% url 'ver_pdf' temario.id temario.Archivo %}">{{temario.NomTemario}}</a>
         <p class="cantidad">{{temario.NumPaginas}} página/s</p>
         <button type="button" class="btn btn-danger trash" data-toggle="modal" data-target="#exampleModalCenter{{ temario.id }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -54,6 +54,7 @@
             </div>
           </div>
         </div>
+        
         
         
       </div>

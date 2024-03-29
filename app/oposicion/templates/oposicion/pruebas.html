@@ -8,7 +8,7 @@
     <a class="nav-link active" aria-current="page"  href="{% url 'pruebas' %}">Pruebas</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Progreso</a>
+    <a class="nav-link" href="{% url 'progreso' %}">Progreso</a>
 </li>
 {% endblock section1 %}
 
@@ -24,11 +24,12 @@
 </div>
 <div class="row bloque">
   {% if all_pruebas %}
-  {% for id,NomOposicion in nombreOposiciones %}
+  {% for id,NomOposicion,cantidad in nombreOposiciones %}
     <div class="card" style="width: 18rem;">
       <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
       <div class="card-body">
         <a class="card-text enlaceTemario" href="{% url 'mostrar_prueba' id=id %}">{{NomOposicion}}</a>
+        <p class="cantidad">{{cantidad}} prueba/s</p>
       </div>
     </div>
     {% endfor %}
@@ -52,32 +53,24 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear prueba</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form method="POST" id="formtemario" enctype="multipart/form-data">
         {% csrf_token %}
       <div class="modal-body">
           <div class="mb-3">
-            <label for="NomTemario" class="form-label">Título</label>
-            <input type="text" class="form-control" name="NomTemario" required>
+            <label for="id_NomPrueba" class="form-label">Título</label>
+            <input type="text" class="form-control" name="NomPrueba" maxlength="50" required="" aria-invalid="true" id="id_NomPrueba">
           </div>
           <div class="mb-3">
-            <label for="IdOposicion" class="form-label">Oposición</label>
-            <select class="form-select select2" name="IdOposicion" id="select2" multiple="multiple" style="width: 100%;" required>
-              {% for oposicion in all_oposicion %}
-                <option value="{{oposicion.id}}" name="IdOposicion">{{oposicion.NomOposicion}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="IdTemario" class="form-label">Temario</label>
-            <select class="form-select select2-temario" name="IdTemario" id="IdTemario" style="width: 100%;" multiple required>
+            <label for="id_temarios" class="form-label">Temario</label>
+            <select class="form-select select2-temario" name="temarios" required="" aria-invalid="true" id="id_temarios" multiple="" style="width: 100%;">
               {% for oposicion in all_oposicion %}
               <optgroup label="{{oposicion.NomOposicion}}">
                 {% for id, NomTemario, IdOposicion in all_temario %}
                   {% if IdOposicion == oposicion.id %}
-                    <option value="{{ id }}" name="IdTemario">{{ NomTemario }}</option>
+                    <option value="{{ id }}" name="temarios">{{ NomTemario }}</option>
                   {% endif %}
                 {% endfor %}
             </optgroup>
@@ -86,10 +79,10 @@
           </div>
           <div class="mb-3">
             <div class="mb-3">
-              <label for="NumPreguntas" class="form-label">Número de preguntas
+              <label for="id_NumPreguntas" class="form-label">Número de preguntas
                 <p id="numero">55</p>
               </label>
-              <input type="range" class="form-range" min="10" max="100" id="customRange3" name="NumPreguntas">
+              <input type="range" class="form-range" min="10" max="100" name="NumPreguntas" required="" aria-invalid="true" id="id_NumPreguntas">
             </div>
           </div>
       </div>
@@ -104,7 +97,7 @@
 </div>
 
 <script>
-let barraDeTiempo = document.getElementById('customRange3');
+let barraDeTiempo = document.getElementById('id_NumPreguntas');
 let cajaNumeral = document.getElementById('numero');
 // Asignar evento a barra
 barraDeTiempo.addEventListener('input', mostrar);

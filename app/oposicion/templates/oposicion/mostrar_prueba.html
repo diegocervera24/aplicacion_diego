@@ -8,7 +8,7 @@
     <a class="nav-link active" aria-current="page"  href="{% url 'pruebas' %}">Pruebas</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Progreso</a>
+    <a class="nav-link" href="{% url 'progreso' %}">Progreso</a>
 </li>
 {% endblock section1 %}
 
@@ -25,11 +25,15 @@
 </div>
 <div class="row bloque">
   {% if pruebas %}
-    {% for id,NomPrueba in pruebas %}
+    {% for id,NomPrueba,Nom,NumPreguntas in pruebas %}
     <div class="card" style="width: 18rem;">
       <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <a class="card-text enlaceTemario" href="#">{{NomPrueba}}</a>
+        <a class="card-text enlaceTemario" href="{% url 'realizarPrueba' Nom %}">{{NomPrueba}}</a>
+        <p class="cantidad">{{NumPreguntas}} preguntas</p>
+        <a class="btn btn-link verTemario custom-popover" href="#" data-toggle="popover" data-placement="bottom" data-toggle="popover" data-trigger="focus" title="Temario incluido"
+        data-content="<ul class=list-group custom-popover>{% for idPrueba, NomTemario in temario %}{% if idPrueba == id %}<li class=list-group-item id=list-group-item>{{NomTemario}}</li>{% endif %}{% endfor %}</ul>" onclick="return false;"> Ver temario incluido</a>
+        
         <button type="button" class="btn btn-danger trash" data-toggle="modal" data-target="#exampleModalCenter{{ id }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -63,4 +67,18 @@
     <p class="card-text">No hay pruebas creadas.</p>
   {% endif %}
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+  $('[data-toggle="popover"]').popover({
+    html: true,
+    content: function() {
+      return $('#popover-content').html();
+    }
+  });
+});
+</script>
 {% endblock section2 %}

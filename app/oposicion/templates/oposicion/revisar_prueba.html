@@ -1,0 +1,153 @@
+{% extends 'oposicion/base.html' %}
+
+{% block section1 %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'temario' %}">Temario</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page"  href="{% url 'pruebas' %}">Pruebas</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'progreso' %}">Progreso</a>
+</li>
+{% endblock section1 %}
+
+{% block section2 %}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-9">
+        <form method="post" class="formulario" id="pruebaForm">
+            {% csrf_token %}
+                {% for pregunta in preguntas %}
+                    <div class="card col-9 fromularioPrueba">
+                        <div class="card-header">
+                            <h5 id="pregunta{{pregunta.id}}">Pregunta {{pregunta.id}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <fieldset>
+                                <h6 class="card-title">{{ pregunta.texto }}</h6>
+                                {% for opcion in pregunta.opciones %}
+                                    {% for idru,respuestaUsuario in respuestas %}
+                                        {% for idrc,respuestaCorrecta in respuestas_correctas %}
+                                            {% if idru == pregunta.id and idrc == pregunta.id and opcion == respuestaUsuario and respuestaUsuario == respuestaCorrecta %}
+                                                <label for="id_pregunta_{{ pregunta.id }}" class="labelPrueba">
+                                                    <input type="radio" name="pregunta_{{ pregunta.id }}" id="pregunta_{{ pregunta.id }}" value="{{ opcion }}" checked disabled>
+                                                    {{ opcion }}
+                                                </label><span>&#10004;</span>
+                                                <br>
+                                            {% elif idru == pregunta.id and idrc == pregunta.id and opcion == respuestaUsuario and respuestaUsuario != respuestaCorrecta %}
+                                                <label for="id_pregunta_{{ pregunta.id }}" class="labelPrueba">
+                                                    <input type="radio" name="pregunta_{{ pregunta.id }}" id="pregunta_{{ pregunta.id }}" value="{{ opcion }}" checked disabled>
+                                                    {{ opcion }}
+                                                </label><span>&#10060;</span>
+                                                <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if idru == pregunta.id and opcion != respuestaUsuario %}
+                                            <label for="id_pregunta_{{ pregunta.id }}" class="labelPrueba">
+                                                <input type="radio" name="pregunta_{{ pregunta.id }}" id="pregunta_{{ pregunta.id }}" value="{{ opcion }}" disabled>
+                                                {{ opcion }}
+                                            </label>
+                                            <br>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </fieldset>
+                        </div>
+                    </div>
+                    {% for id,respuesta in respuestas_correctas %}
+                        {% if id == pregunta.id %}
+                        <p class="respuesta">Respuesta correcta: {{ respuesta }}</p>  
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+        </form>
+      </div>
+      <div class="col-2">
+        <div class="sidebar">
+            <div class="clock">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stopwatch-fill" viewBox="0 0 16 16">
+                  <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07A7.001 7.001 0 0 0 8 16a7 7 0 0 0 5.29-11.584l.013-.012.354-.354.353.354a.5.5 0 1 0 .707-.707l-1.414-1.415a.5.5 0 1 0-.707.707l.354.354-.354.354-.012.012A6.97 6.97 0 0 0 9 2.071V1h.5a.5.5 0 0 0 0-1zm2 5.6V9a.5.5 0 0 1-.5.5H4.5a.5.5 0 0 1 0-1h3V5.6a.5.5 0 1 1 1 0"/>
+                </svg>
+                <span class="timer">{{tiempo_total}}</span>
+              </div>
+            <p>Preguntas</p>
+            <div class="question">
+                {% for pregunta in preguntas %}
+                    {% for acierto in acertadas %}
+                        {% if acierto == pregunta.id %}
+                        <a href="#pregunta{{pregunta.id}}" class="question-link green">{{pregunta.id}}</a>  
+                        {% endif %}
+                    {% endfor %}
+                    {% for blanco in blancas %}
+                        {% if blanco == pregunta.id %}
+                            <a href="#pregunta{{pregunta.id}}" class="question-link">{{pregunta.id}}</a> 
+                        {% endif %}
+                    {% endfor %}
+                    {% for fallo in falladas %}
+                        {% if fallo == pregunta.id %}
+                            <a href="#pregunta{{pregunta.id}}" class="question-link red">{{pregunta.id}}</a> 
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            
+            
+            <button type="button" class="botonTemario" data-toggle="modal" data-target="#exampleModalCenter2">FINALIZAR REVISION</button>
+
+            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#myModal">
+                Ver resultado
+              </button>
+        </div>
+      </div>
+    </div>
+  </div>   
+  <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Resultado</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p class="tituloPrueba">{{titulo}}</p>
+
+            <p class="notaPrueba">Nota: {{ nota|floatformat:2 }}</p>
+
+            <p>Respuestas correctas: {{ puntaje }}</p>
+    
+            <p>Respuestas incorrectas: {{ incorrectas }}</p>
+            
+            <p>Respuestas en blanco: {{ blanco }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary botonCancelar" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Terminar revisión</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h2 aria-hidden="true">&times;</h2>
+          </button>
+        </div>
+        <div class="modal-body">
+          Desea acabar la revisión?
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'pruebas' %}" class="botonTemario">FINALIZAR REVISION</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock section2 %}
