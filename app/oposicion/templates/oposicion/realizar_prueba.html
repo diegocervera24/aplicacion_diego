@@ -115,5 +115,11 @@ startLogOutTimer();
 function pause(){
   clearInterval(timer);
 }
+
+if (performance.navigation.type === 1) {
+    
+    window.location.href = "{% url 'pruebas' %}";
+}
+
 </script>
 {% endblock section2 %}

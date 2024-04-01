@@ -1,5 +1,6 @@
 from django.db import models
 from usuarios.models import User
+from django.core.validators import MinValueValidator
 
 class Oposicion(models.Model):
     NomOposicion = models.CharField(null=False, max_length=50)
@@ -42,7 +43,7 @@ class Progreso(models.Model):
     PregAcertadas = models.DecimalField(null=False, max_digits=3, decimal_places=0)
     PregFalladas = models.DecimalField(null=False, max_digits=3, decimal_places=0)
     PregBlanco = models.DecimalField(null=False, max_digits=3, decimal_places=0)
-    Tiempo = models.IntegerField(null=False)
+    Tiempo = models.IntegerField(null=False, validators=[MinValueValidator(1)])
     IdPrueba = models.ForeignKey(Prueba, on_delete=models.CASCADE)
 
     class Meta:

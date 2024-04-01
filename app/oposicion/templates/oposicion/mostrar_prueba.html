@@ -29,7 +29,9 @@
     <div class="card" style="width: 18rem;">
       <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <a class="card-text enlaceTemario" href="{% url 'realizarPrueba' Nom %}">{{NomPrueba}}</a>
+        
+        <button type="button" class="btn enlacePrueba enlaceTemario" data-toggle="modal" data-target="#modalPrueba">{{NomPrueba}}</button>
+
         <p class="cantidad">{{NumPreguntas}} preguntas</p>
         <a class="btn btn-link verTemario custom-popover" href="#" data-toggle="popover" data-placement="bottom" data-toggle="popover" data-trigger="focus" title="Temario incluido"
         data-content="<ul class=list-group custom-popover>{% for idPrueba, NomTemario in temario %}{% if idPrueba == id %}<li class=list-group-item id=list-group-item>{{NomTemario}}</li>{% endif %}{% endfor %}</ul>" onclick="return false;"> Ver temario incluido</a>
@@ -54,6 +56,25 @@
               </div>
               <div class="modal-footer">
                 <a href="{% url 'eliminarPrueba' id %}" class="boton eliminar">ELIMINAR PRUEBA</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modalPrueba" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Realizar prueba</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <h2 aria-hidden="true">&times;</h2>
+                </button>
+              </div>
+              <div class="modal-body">
+                Desea realizar la prueba {{NomPrueba}}?
+              </div>
+              <div class="modal-footer">
+                <a href="{% url 'realizarPrueba' Nom %}" class="botonTemario">REALIZAR PRUEBA</a>
               </div>
             </div>
           </div>

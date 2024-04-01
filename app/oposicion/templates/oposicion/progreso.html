@@ -11,3 +11,95 @@
     <a class="nav-link active" aria-current="page" href="{% url 'progreso' %}">Progreso</a>
 </li>
 {% endblock section1 %}
+
+{% block section2 %}
+<div class="container">
+  <div class="row breadcrumb">
+    <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">General</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="container text-center">
+  <div class="row align-items-start general">
+    <div class="col">
+      Preguntas realizadas: {{pregTotal}}
+    </div>
+    <div class="col">
+      Nota media: {{notaMediaPrueba}}
+    </div>
+    <div class="col">
+      Tiempo medio empleado: {{tiempoMedioTotal}}
+    </div>
+  </div>
+</div>
+
+
+
+<div class="all">
+  <div class="circle-wrap">
+    <div class="circle">
+      <div class="mask full-1">
+        <div class="fill-1"></div>
+      </div>
+      <div class="mask half">
+        <div class="fill-1" id="fill-1"></div>
+      </div>
+      <div class="inside-circle"> {{porcAciertos}}% </div>
+      <div class="tit">% aciertos</div>
+    </div>
+  </div>
+
+  <div class="circle-wrap">
+    <div class="circle">
+      <div class="mask full-2">
+        <div class="fill-2"></div>
+      </div>
+      <div class="mask half">
+        <div class="fill-2"></div>
+      </div>
+      <div class="inside-circle"> {{porcFallos}}% </div>
+      <div class="tit">% fallos</div>
+    </div>
+  </div>
+
+  <div class="circle-wrap">
+    <div class="circle">
+      <div class="mask full-3">
+        <div class="fill-3"></div>
+      </div>
+      <div class="mask half">
+        <div class="fill-3"></div>
+      </div>
+      <div class="inside-circle"> {{porcBlancos}}% </div>
+      <div class="tit">% blancos</div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="container">
+  <div class="row breadcrumb">
+    <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Oposiciones</li>
+      </ol>
+    </div>
+  </div>
+
+
+<script>
+  var acierto = "{{angleAciertos}}";
+  document.documentElement.style.setProperty('--acierto', acierto + 'deg');
+
+  var fallo = "{{angleFallos}}"
+  document.documentElement.style.setProperty('--fallo', fallo + 'deg');
+
+  var blanco = "{{angleBlancos}}"
+  document.documentElement.style.setProperty('--blanco', blanco + 'deg');
+
+</script>
+{% endblock section2 %}

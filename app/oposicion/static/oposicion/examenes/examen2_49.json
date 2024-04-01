@@ -1,0 +1,265 @@
+{
+    "examen": {
+      "titulo": "Examen de Matemáticas Avanzadas",
+      "preguntas": [
+        {
+          "id": 1,
+          "texto": "¿Cuál es el resultado de la integral definida ∫(2x + 3) dx desde 0 hasta 5?",
+          "opciones": ["5x + 3", "10x + 15", "15x + 3", "10x + 18"],
+          "respuesta_correcta": "10x + 15"
+        },
+        {
+          "id": 2,
+          "texto": "¿Cuál es el resultado de la derivada de ln(x^2 + 1)?",
+          "opciones": ["(2x) / (x^2 + 1)", "(2x) / (x^2 + 1)^2", "(2x) / sqrt(x^2 + 1)", "2 / (x^2 + 1)"],
+          "respuesta_correcta": "(2x) / (x^2 + 1)"
+        },
+        {
+          "id": 3,
+          "texto": "¿Cuál es el resultado de la serie geométrica 1 + 1/2 + 1/4 + 1/8 + ...?",
+          "opciones": ["2", "1", "3", "4"],
+          "respuesta_correcta": "2"
+        },
+        {
+          "id": 4,
+          "texto": "¿Cuál es la definición de un número irracional?",
+          "opciones": ["Un número que no puede ser expresado como una fracción", "Un número que puede ser expresado como una fracción", "Un número entero", "Un número negativo"],
+          "respuesta_correcta": "Un número que no puede ser expresado como una fracción"
+        },
+        {
+          "id": 5,
+          "texto": "¿Cuál es la derivada de e^x?",
+          "opciones": ["e^x", "x^e", "e", "1"],
+          "respuesta_correcta": "e^x"
+        },
+        {
+          "id": 6,
+          "texto": "¿Cuál es el resultado de la integral indefinida ∫(2x^2 + 3x - 1) dx?",
+          "opciones": ["(2/3)x^3 + (3/2)x^2 - x + C", "(2/3)x^3 + (3/2)x^2 - x^2 + C", "(2)x^3 + (3/2)x^2 - x + C", "(2)x^3 + (3/2)x^2 - x^2 + C"],
+          "respuesta_correcta": "(2/3)x^3 + (3/2)x^2 - x + C"
+        },
+        {
+          "id": 7,
+          "texto": "¿Cuál es el valor de la constante de Euler, e, aproximado a dos decimales?",
+          "opciones": ["2.71", "3.14", "1.61", "2.50"],
+          "respuesta_correcta": "2.71"
+        },
+        {
+          "id": 8,
+          "texto": "¿Cuántos grados hay en un ángulo recto?",
+          "opciones": ["90", "45", "180", "360"],
+          "respuesta_correcta": "90"
+        },
+        {
+          "id": 9,
+          "texto": "¿Cuál es la derivada de cos(x)?",
+          "opciones": ["sen(x)", "cos(x)", "-sen(x)", "-cos(x)"],
+          "respuesta_correcta": "-sen(x)"
+        },
+        {
+          "id": 10,
+          "texto": "¿Cuál es el resultado de la siguiente ecuación: 3x - 5 = 10?",
+          "opciones": ["x = 5", "x = 15", "x = 2", "x = -5"],
+          "respuesta_correcta": "x = 5"
+        },
+        {
+          "id": 11,
+          "texto": "¿Cuántos lados tiene un pentágono?",
+          "opciones": ["4", "5", "6", "7"],
+          "respuesta_correcta": "5"
+        },
+        {
+          "id": 12,
+          "texto": "¿Cuál es el valor de pi (π) aproximado a dos decimales?",
+          "opciones": ["3.14", "3.15", "3.16", "3.17"],
+          "respuesta_correcta": "3.14"
+        },
+        {
+          "id": 13,
+          "texto": "¿Cuál es el resultado de la siguiente ecuación cuadrática: x^2 + 4x + 4 = 0?",
+          "opciones": ["x = -2", "x = 2", "x = -4", "x = 4"],
+          "respuesta_correcta": "x = -2"
+        },
+        {
+          "id": 14,
+          "texto": "¿Cuál es el resultado de la derivada de 3x^3?",
+          "opciones": ["x^2", "3x^2", "9x^2", "6x"],
+          "respuesta_correcta": "9x^2"
+        },
+        {
+          "id": 15,
+          "texto": "¿Cuál es el resultado de la siguiente ecuación exponencial: 2^(3x) = 8?",
+          "opciones": ["x = 3", "x = 2", "x = 1", "x = 4"],
+          "respuesta_correcta": "x = 1"
+        },
+        {
+          "id": 16,
+          "texto": "¿Cuál es el resultado de la siguiente integral indefinida: ∫(sen(x) + cos(x)) dx?",
+          "opciones": ["sen(x) - cos(x) + C", "-sen(x) + cos(x) + C", "sen(x) + cos(x) + C", "-sen(x) - cos(x) + C"],
+          "respuesta_correcta": "sen(x) - cos(x) + C"
+        },
+        {
+          "id": 17,
+          "texto": "¿Cuál es la fórmula para calcular el área de un círculo?",
+          "opciones": ["πr^2", "2πr", "πd", "2πr^2"],
+          "respuesta_correcta": "πr^2"
+        },
+        {
+          "id": 18,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 19,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 20,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 21,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 22,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 23,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 24,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 25,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 26,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 27,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 28,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 29,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 30,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 31,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 32,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 33,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 34,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 35,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 36,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 37,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 38,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 39,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 40,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 41,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 42,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        },
+        {
+          "id": 43,
+          "texto": "¿Cuál es la derivada de ln(x)?",
+          "opciones": ["1/x", "x", "1", "ln(x)"],
+          "respuesta_correcta": "1/x"
+        }
+    ]
+  }
+}

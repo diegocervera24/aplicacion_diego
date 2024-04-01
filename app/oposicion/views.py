@@ -11,6 +11,7 @@ from django.db.models import Value, CharField, F
 from django.db.models.functions import Concat
 from django.http import FileResponse
 from datetime import datetime
+import decimal
 
 def homepage(request):
      if request.user.is_authenticated:
@@ -62,9 +63,13 @@ def mostrar_temario(request, id):
 
 @login_required(login_url="sign")
 def eliminarTemario(request, id):
-    elemento = get_object_or_404(Temario, id=id)
-    elemento.TemVisible = False
-    elemento.save()
+    user=request.user.username
+    usuario_temario = Temario.objects.all().filter(id=id).values_list('NomUsuario__username', flat=True).first()
+    print(usuario_temario)
+    if user == usuario_temario:
+        elemento = get_object_or_404(Temario, id=id)
+        elemento.TemVisible = False
+        elemento.save()
 
     return redirect ('temario')
 
@@ -122,56 +127,68 @@ def mostrar_prueba(request, id):
 
 @login_required(login_url="sign")
 def eliminarPrueba(request, id):
-    elemento = get_object_or_404(Prueba, id=id)
-    elemento.PruVisible = False
-    elemento.save()
+    user=request.user.username
+    usuario_prueba = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdPrueba=id).values_list('IdTemario__NomUsuario__username', flat=True).first()
+    if user == usuario_prueba:
+        elemento = get_object_or_404(Prueba, id=id)
+        elemento.PruVisible = False
+        elemento.save()
 
     return redirect ('pruebas')
+    
 
 @login_required(login_url="sign")
 def realizarPrueba(request, titulo):
-    _, id_prueba = titulo.split('_')
     hora_inicio = []
+    user=request.user.username
+    _, id_prueba = titulo.split('_')
+    usuario_prueba = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdPrueba=id_prueba).values_list('IdTemario__NomUsuario__username', flat=True).first()
 
-    ruta_archivo = os.path.join(settings.BASE_DIR, f'oposicion/static/oposicion/examenes/{titulo}.json')
-    with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
-        data = json.load(archivo)
-        examen_data = data.get('examen', {})
-        preguntas = examen_data.get('preguntas', [])
-        titulo = examen_data.get('titulo', [])
+    if user == usuario_prueba:
+        ruta_archivo = os.path.join(settings.BASE_DIR, f'oposicion/static/oposicion/examenes/{titulo}.json')
+        with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
+            data = json.load(archivo)
+            examen_data = data.get('examen', {})
+            preguntas = examen_data.get('preguntas', [])
+            titulo = examen_data.get('titulo', [])
 
-    hora_inicio = request.session.get('hora_inicio', [])
-    hora_inicio.append(datetime.now().isoformat())
-    request.session['hora_inicio'] = hora_inicio
-    
-    print(hora_inicio)
-    if request.method == 'POST':
-        form = ExamenForm(request.POST, preguntas=preguntas)
-
-        respuestas_correctas = {(pregunta['id'], pregunta['respuesta_correcta']) for pregunta in preguntas}
+        hora_inicio = request.session.get('hora_inicio', [])
+        hora_inicio.append(datetime.now().isoformat())
+        request.session['hora_inicio'] = hora_inicio
         
-        if form.is_valid():
-            puntaje, incorrectas, blanco, nota, acertadas, falladas,  blancas, respuestas = form.evaluar_respuestas(preguntas)
-            hora_fin = datetime.now().isoformat()
-            hora_inicio_dt = datetime.fromisoformat(hora_inicio[0])
-            hora_fin_dt = datetime.fromisoformat(hora_fin)
+        if request.method == 'POST':
+            form = ExamenForm(request.POST, preguntas=preguntas)
 
-            tiempo = (hora_fin_dt - hora_inicio_dt)
-
-            minutos = int(tiempo.total_seconds() // 60)
-            segundos = int(tiempo.total_seconds() % 60) - 1
-
-            tiempo_total = f"{minutos:02d}:{segundos:02d}"
-            tiempo_segundos = tiempo.total_seconds()
-            del request.session['hora_inicio']
+            respuestas_correctas = {(pregunta['id'], pregunta['respuesta_correcta']) for pregunta in preguntas}
             
-            Progreso.objects.create(Nota=nota, PregAcertadas=puntaje, PregFalladas=incorrectas, PregBlanco=blanco, Tiempo=tiempo_segundos, IdPrueba_id=id_prueba)
+            if form.is_valid():
+                puntaje, incorrectas, blanco, nota, acertadas, falladas,  blancas, respuestas = form.evaluar_respuestas(preguntas)
+                hora_fin = datetime.now().isoformat()
+                hora_inicio_dt = datetime.fromisoformat(hora_inicio[0])
+                hora_fin_dt = datetime.fromisoformat(hora_fin)
 
-            return render(request, 'oposicion/revisar_prueba.html', {'form': form, 'preguntas': preguntas,'puntaje': puntaje,'incorrectas':incorrectas, 'blanco':blanco, 'nota':nota, 'respuestas_correctas':respuestas_correctas, 'acertadas':acertadas, 'falladas':falladas, 'blancas':blancas, 'respuestas':respuestas,'titulo':titulo, 'hora_inicio': hora_inicio, 'tiempo_total':tiempo_total})
+                tiempo = (hora_fin_dt - hora_inicio_dt)
+
+                minutos = int(tiempo.total_seconds() // 60)
+                segundos = int(tiempo.total_seconds() % 60)
+
+                tiempo_total = f"{minutos:02d}:{segundos:02d}"
+                tiempo_segundos = tiempo.total_seconds()
+                del request.session['hora_inicio']
+                print(tiempo_segundos)
+                if tiempo_segundos <= 1:
+                    return redirect ('pruebas')
+                else:
+                    Progreso.objects.create(Nota=nota, PregAcertadas=puntaje, PregFalladas=incorrectas, PregBlanco=blanco, Tiempo=tiempo_segundos, IdPrueba_id=id_prueba)
+
+                return render(request, 'oposicion/revisar_prueba.html', {'form': form, 'preguntas': preguntas,'puntaje': puntaje,'incorrectas':incorrectas, 'blanco':blanco, 'nota':nota, 'respuestas_correctas':respuestas_correctas, 'acertadas':acertadas, 'falladas':falladas, 'blancas':blancas, 'respuestas':respuestas,'titulo':titulo, 'hora_inicio': hora_inicio, 'tiempo_total':tiempo_total})
+        else:
+            form = ExamenForm(preguntas=preguntas)
+
+        return render(request, 'oposicion/realizar_prueba.html', {'form': form, 'preguntas': preguntas})
+    
     else:
-        form = ExamenForm(preguntas=preguntas)
-
-    return render(request, 'oposicion/realizar_prueba.html', {'form': form, 'preguntas': preguntas})
+        return redirect ('pruebas')
 
 @login_required(login_url="sign")
 def ver_pdf(request,id, path):
@@ -181,4 +198,64 @@ def ver_pdf(request,id, path):
 
 @login_required(login_url="sign")
 def progreso(request):
-     return render(request, 'oposicion/progreso.html')
+    user=request.user.username
+    pregAcertadasTotal = 0
+    pregFalladasTotal = 0
+    pregBlancoTotal = 0
+    pregTotal = 0
+    notaMedia = decimal.Decimal("0.00")
+    tiempoMedio = 0
+    porcAciertos = 0
+    porcFallos = 0
+    porcBlancos = 0 
+    angleAciertos = 0
+    angleFallos = 0
+    angleBlancos = 0
+
+    porcentaje_acertadas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False).values_list('IdPrueba__progreso__id')
+    
+    for idPrueba in porcentaje_acertadas:
+        id=idPrueba[0]
+        pregAcertadas = Progreso.objects.all().filter(id=id).values_list('PregAcertadas').first()
+        pregFalladas = Progreso.objects.all().filter(id=id).values_list('PregFalladas').first()
+        pregBlanco = Progreso.objects.all().filter(id=id).values_list('PregBlanco').first()
+        notaPrueba = Progreso.objects.all().filter(id=id).values_list('Nota').first()
+        tiempoPrueba = Progreso.objects.all().filter(id=id).values_list('Tiempo').first()
+        acertadas = pregAcertadas[0]
+        falladas = pregFalladas[0]
+        blanco = pregBlanco[0]
+        nota = notaPrueba[0]
+        tiempo = tiempoPrueba[0]
+        pregAcertadasTotal += acertadas
+        pregFalladasTotal += falladas
+        pregBlancoTotal += blanco
+        notaMedia += nota
+        tiempoMedio += tiempo
+        
+    pregTotal = pregAcertadasTotal+pregBlancoTotal+pregFalladasTotal
+
+    if notaMedia != 0 or tiempoMedio != 0 or porcAciertos != 0 or porcFallos != 0 or porcBlancos != 0:
+        notaMedia = notaMedia/len(porcentaje_acertadas)
+        notaMediaPrueba = "{:.2f}".format(notaMedia)
+
+        
+        porcAciertos = round((pregAcertadasTotal / pregTotal)*100,2)  
+        porcFallos = round((pregFalladasTotal / pregTotal)*100,2)
+        porcBlancos = round((pregBlancoTotal / pregTotal)*100,2)
+
+        
+        angleAciertos = (porcAciertos*180)/100
+        angleFallos = (porcFallos*180)/100
+        angleBlancos = (porcBlancos*180)/100
+
+        tiempoMedio = int(round(tiempoMedio/len(porcentaje_acertadas), 0))
+        minutos = tiempoMedio // 60
+        segundos = tiempoMedio % 60
+        tiempoMedioTotal = f"{minutos:02d}:{segundos:02d}"
+
+        
+    else:
+        notaMediaPrueba = 0
+        tiempoMedioTotal = 0
+
+    return render(request, 'oposicion/progreso.html',{'pregAcertadasTotal':pregAcertadasTotal,'pregFalladasTotal':pregFalladasTotal,'pregBlancoTotal':pregBlancoTotal, 'pregTotal':pregTotal,'notaMediaPrueba':notaMediaPrueba,'tiempoMedioTotal':tiempoMedioTotal,'porcAciertos':porcAciertos,'porcFallos':porcFallos,'porcBlancos':porcBlancos,'angleAciertos':angleAciertos,'angleFallos':angleFallos,'angleBlancos':angleBlancos})
