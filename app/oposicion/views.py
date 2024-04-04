@@ -138,7 +138,6 @@ def eliminarPrueba(request, id):
 
 @login_required(login_url="sign")
 def realizarPrueba(request, titulo):
-    hora_inicio = []
     user=request.user.username
     _, id_prueba = titulo.split('_')
     usuario_prueba = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdPrueba=id_prueba).values_list('IdTemario__NomUsuario__username', flat=True).first()
@@ -151,9 +150,7 @@ def realizarPrueba(request, titulo):
             preguntas = examen_data.get('preguntas', [])
             titulo = examen_data.get('titulo', [])
 
-        hora_inicio = request.session.get('hora_inicio', [])
-        hora_inicio.append(datetime.now().isoformat())
-        request.session['hora_inicio'] = hora_inicio
+        
         
         if request.method == 'POST':
             form = ExamenForm(request.POST, preguntas=preguntas)
@@ -162,19 +159,20 @@ def realizarPrueba(request, titulo):
             
             if form.is_valid():
                 puntaje, incorrectas, blanco, nota, acertadas, falladas,  blancas, respuestas = form.evaluar_respuestas(preguntas)
+                hora_inicio = request.POST.get('hora_inicio', None)
                 hora_fin = datetime.now().isoformat()
-                hora_inicio_dt = datetime.fromisoformat(hora_inicio[0])
+                hora_inicio_dt = datetime.fromisoformat(hora_inicio)
                 hora_fin_dt = datetime.fromisoformat(hora_fin)
 
                 tiempo = (hora_fin_dt - hora_inicio_dt)
+                print(hora_inicio)
 
                 minutos = int(tiempo.total_seconds() // 60)
                 segundos = int(tiempo.total_seconds() % 60)
 
                 tiempo_total = f"{minutos:02d}:{segundos:02d}"
                 tiempo_segundos = tiempo.total_seconds()
-                del request.session['hora_inicio']
-                print(tiempo_segundos)
+                
                 if tiempo_segundos <= 1:
                     return redirect ('pruebas')
                 else:
@@ -184,7 +182,7 @@ def realizarPrueba(request, titulo):
         else:
             form = ExamenForm(preguntas=preguntas)
 
-        return render(request, 'oposicion/realizar_prueba.html', {'form': form, 'preguntas': preguntas})
+        return render(request, 'oposicion/realizar_prueba.html', {'form': form, 'preguntas': preguntas, 'hora_inicio': datetime.now().isoformat()})
     
     else:
         return redirect ('pruebas')
