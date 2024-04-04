@@ -6,10 +6,10 @@
     <a class="nav-link" aria-current="page" href="{% url 'temario' %}">Temario</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Pruebas</a>
+    <a class="nav-link" href="{% url 'pruebas' %}">Pruebas</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Progreso</a>
+    <a class="nav-link" href="{% url 'progreso' %}">Progreso</a>
 </li>
 {% endblock section1 %}
 
@@ -33,22 +33,22 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label class="titulosPerfil" for="username">Nombre completo:</label><br>
-                                <input type="text" name="nombre" value="{{user.nombre}}">
+                                <input type="text" class="form-control" name="nombre" value="{{user.nombre}}">
                             </div>
                             <div class="col-lg-6">
                                 <label class="titulosPerfil" for="email">Email:</label><br>
-                                <input type="email" name="email" value="{{user.email}}">
+                                <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" value="{{user.email}}">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 position-relative">
                                 <label class="titulosPerfil" for="password1">Contraseña nueva:</label><br>
-                                <input type="password" name="password1" id="password1">
-                                <img src="{% static 'usuarios/img/eyeclose.png' %}" id="eye1">
+                                <img src="{% static 'usuarios/img/eyeclose.png' %}" id="eye1">                                
+                                <input type="password" name="password1" class="form-control" id="password1">
                             </div>
-                            <div class="col-lg-6">
-                                <label class="titulosPerfil" for="password2">Repita contraseña:</label><br>
-                                <input type="password" name="password2" id="password2">
+                            <div class="col-lg-6 position-relative">
+                                <label class="titulosPerfil" for="password2">Repita contraseña:</label><br>                               
+                                <input type="password" name="password2" class="form-control" id="password2">
                                 <img src="{% static 'usuarios/img/eyeclose.png' %}" id="eye2">
                             </div>
                             <div id="ocultar">

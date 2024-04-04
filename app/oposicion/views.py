@@ -122,7 +122,6 @@ def mostrar_prueba(request, id):
     pruebas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdTemario__IdOposicion=id,IdTemario__NomUsuario__username=user,IdPrueba__PruVisible=True).annotate(nombre_id=Concat(F('IdPrueba__NomPrueba'), Value('_'), F('IdPrueba__id'), output_field=CharField())).values_list('IdPrueba', 'IdPrueba__NomPrueba','nombre_id','IdPrueba__NumPreguntas').distinct()
     temario = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdTemario__IdOposicion=id,IdTemario__NomUsuario__username=user,IdPrueba__PruVisible=True).values_list('IdPrueba','IdTemario__NomTemario')
 
-
     return render(request, 'oposicion/mostrar_prueba.html', {'oposicion': oposicion,'pruebas': pruebas, 'temario':temario})
 
 @login_required(login_url="sign")
@@ -199,6 +198,9 @@ def ver_pdf(request,id, path):
 @login_required(login_url="sign")
 def progreso(request):
     user=request.user.username
+    idpruebas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False).values_list('IdPrueba__progreso__IdPrueba_id').distinct()
+    progresos = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False).values_list('IdPrueba__progreso__id')
+    oposiciones = set()
     pregAcertadasTotal = 0
     pregFalladasTotal = 0
     pregBlancoTotal = 0
@@ -212,10 +214,17 @@ def progreso(request):
     angleFallos = 0
     angleBlancos = 0
 
-    porcentaje_acertadas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False).values_list('IdPrueba__progreso__id')
+
+    for id in idpruebas:
+        id=id[0]
+        temas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdPrueba__id=id).values_list('IdTemario', flat=True)
+        idtema=temas[0]
+        oposicion = Temario.objects.all().prefetch_related('IdOposicion').filter(id=idtema).values_list('IdOposicion__NomOposicion', 'IdOposicion')
+        oposiciones.update(oposicion)
     
-    for idPrueba in porcentaje_acertadas:
-        id=idPrueba[0]
+    
+    for idProgreso in progresos:
+        id=idProgreso[0]
         pregAcertadas = Progreso.objects.all().filter(id=id).values_list('PregAcertadas').first()
         pregFalladas = Progreso.objects.all().filter(id=id).values_list('PregFalladas').first()
         pregBlanco = Progreso.objects.all().filter(id=id).values_list('PregBlanco').first()
@@ -235,7 +244,7 @@ def progreso(request):
     pregTotal = pregAcertadasTotal+pregBlancoTotal+pregFalladasTotal
 
     if notaMedia != 0 or tiempoMedio != 0 or porcAciertos != 0 or porcFallos != 0 or porcBlancos != 0:
-        notaMedia = notaMedia/len(porcentaje_acertadas)
+        notaMedia = notaMedia/len(progresos)
         notaMediaPrueba = "{:.2f}".format(notaMedia)
 
         
@@ -248,7 +257,7 @@ def progreso(request):
         angleFallos = (porcFallos*180)/100
         angleBlancos = (porcBlancos*180)/100
 
-        tiempoMedio = int(round(tiempoMedio/len(porcentaje_acertadas), 0))
+        tiempoMedio = int(round(tiempoMedio/len(progresos), 0))
         minutos = tiempoMedio // 60
         segundos = tiempoMedio % 60
         tiempoMedioTotal = f"{minutos:02d}:{segundos:02d}"
@@ -258,4 +267,71 @@ def progreso(request):
         notaMediaPrueba = 0
         tiempoMedioTotal = 0
 
-    return render(request, 'oposicion/progreso.html',{'pregAcertadasTotal':pregAcertadasTotal,'pregFalladasTotal':pregFalladasTotal,'pregBlancoTotal':pregBlancoTotal, 'pregTotal':pregTotal,'notaMediaPrueba':notaMediaPrueba,'tiempoMedioTotal':tiempoMedioTotal,'porcAciertos':porcAciertos,'porcFallos':porcFallos,'porcBlancos':porcBlancos,'angleAciertos':angleAciertos,'angleFallos':angleFallos,'angleBlancos':angleBlancos})
+
+
+    return render(request, 'oposicion/progreso.html',{'pregAcertadasTotal':pregAcertadasTotal,'pregFalladasTotal':pregFalladasTotal,'pregBlancoTotal':pregBlancoTotal, 'pregTotal':pregTotal,'notaMediaPrueba':notaMediaPrueba,'tiempoMedioTotal':tiempoMedioTotal,'porcAciertos':porcAciertos,'porcFallos':porcFallos,'porcBlancos':porcBlancos,'angleAciertos':angleAciertos,'angleFallos':angleFallos,'angleBlancos':angleBlancos,'oposiciones':oposiciones})
+
+@login_required(login_url="sign")
+def progresoOposicion(request,id):
+    user=request.user.username
+    idpruebas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False, IdTemario__IdOposicion=id).values_list('IdPrueba__progreso__IdPrueba_id').distinct()
+    progresos = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False, IdTemario__IdOposicion=id).values_list('IdPrueba__progreso__id')
+    oposicion = get_object_or_404(Oposicion, id=id)
+
+    pregAcertadasTotal = 0
+    pregFalladasTotal = 0
+    pregBlancoTotal = 0
+    pregTotal = 0
+    notaMedia = decimal.Decimal("0.00")
+    notaMediaPrueba = 0
+    tiempoMedio = 0
+    tiempoMedioTotal = "00:00"
+    porcAciertos = 0
+    porcFallos = 0
+    porcBlancos = 0 
+    angleAciertos = 0
+    angleFallos = 0
+    angleBlancos = 0
+
+    if idpruebas:
+        for idProgreso in progresos:
+            id=idProgreso[0]
+            pregAcertadas = Progreso.objects.all().filter(id=id).values_list('PregAcertadas').first()
+            pregFalladas = Progreso.objects.all().filter(id=id).values_list('PregFalladas').first()
+            pregBlanco = Progreso.objects.all().filter(id=id).values_list('PregBlanco').first()
+            notaPrueba = Progreso.objects.all().filter(id=id).values_list('Nota').first()
+            tiempoPrueba = Progreso.objects.all().filter(id=id).values_list('Tiempo').first()
+            acertadas = pregAcertadas[0]
+            falladas = pregFalladas[0]
+            blanco = pregBlanco[0]
+            nota = notaPrueba[0]
+            tiempo = tiempoPrueba[0]
+            pregAcertadasTotal += acertadas
+            pregFalladasTotal += falladas
+            pregBlancoTotal += blanco
+            notaMedia += nota
+            tiempoMedio += tiempo
+            
+        pregTotal = pregAcertadasTotal+pregBlancoTotal+pregFalladasTotal
+
+        if notaMedia >= 0 or tiempoMedio != 0 or porcAciertos != 0 or porcFallos != 0 or porcBlancos != 0:
+            notaMedia = notaMedia/len(progresos)
+            notaMediaPrueba = "{:.2f}".format(notaMedia)
+
+            
+            porcAciertos = round((pregAcertadasTotal / pregTotal)*100,2)  
+            porcFallos = round((pregFalladasTotal / pregTotal)*100,2)
+            porcBlancos = round((pregBlancoTotal / pregTotal)*100,2)
+
+            
+            angleAciertos = (porcAciertos*180)/100
+            angleFallos = (porcFallos*180)/100
+            angleBlancos = (porcBlancos*180)/100
+
+            tiempoMedio = int(round(tiempoMedio/len(progresos), 0))
+            minutos = tiempoMedio // 60
+            segundos = tiempoMedio % 60
+            tiempoMedioTotal = f"{minutos:02d}:{segundos:02d}"
+
+
+    return render(request, 'oposicion/progresoOposicion.html',{'pregAcertadasTotal':pregAcertadasTotal,'pregFalladasTotal':pregFalladasTotal,'pregBlancoTotal':pregBlancoTotal, 'pregTotal':pregTotal,'notaMediaPrueba':notaMediaPrueba,'tiempoMedioTotal':tiempoMedioTotal,'porcAciertos':porcAciertos,'porcFallos':porcFallos,'porcBlancos':porcBlancos,'angleAciertos':angleAciertos,'angleFallos':angleFallos,'angleBlancos':angleBlancos,'oposicion':oposicion})

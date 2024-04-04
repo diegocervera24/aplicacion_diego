@@ -14,4 +14,5 @@ urlpatterns = [
     path('pruebas/eliminarprueba/<int:id>/',views.eliminarPrueba, name="eliminarPrueba"),
     path('pruebas/realizarprueba/<str:titulo>/',views.realizarPrueba, name="realizarPrueba"),
     path('progreso/',views.progreso, name="progreso"),
+    path('progreso/<int:id>/',views.progresoOposicion, name="progresoOposicion"),
 ]

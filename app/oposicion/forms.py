@@ -43,7 +43,11 @@ class ExamenForm(forms.Form):
                 nota -= 0.25
                 falladas.append(pregunta["id"])
 
-        nota = (nota / (puntaje+blanco+incorrectas)) * 10
+        if nota > 0:
+            nota = (nota / (puntaje+blanco+incorrectas)) * 10
+        else:
+            nota = 0
+            
         return puntaje, incorrectas, blanco, nota, acertadas, falladas, blancas, respuestas
     
 class PruebaForm(forms.ModelForm):

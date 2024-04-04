@@ -18,7 +18,8 @@
   <div class="row breadcrumb">
     <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">General</li>
+        <li class="breadcrumb-item"><a href="{% url 'progreso' %}">Progreso</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{oposicion}}</li>
       </ol>
     </div>
   </div>
@@ -79,43 +80,16 @@
   
 </div>
 
-<div class="container">
-  <div class="row breadcrumb">
-    <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Oposiciones</li>
-      </ol>
-    </div>
-  </div>
-  
-<div class="row bloque">
-  {% if oposiciones %}
-  {% for NomOposicion_Id in oposiciones %}
-    <div class="card" style="width: 18rem;">
-      <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
-      <div class="card-body">
-        <a class="card-text enlaceTemario" href="{% url 'progresoOposicion' NomOposicion_Id.1 %}">{{NomOposicion_Id.0}}</a>        
-      </div>
-    </div>
-    {% endfor %}
-    {% else %}
-    <p class="card-text">No se ha realizado ninguna prueba.</p>
-  {% endif %}
-</div>
-
-</div>
-
-
-
 <script>
-  var acierto = "{{angleAciertos}}";
-  document.documentElement.style.setProperty('--acierto', acierto + 'deg');
+    var acierto = "{{angleAciertos}}";
+    document.documentElement.style.setProperty('--acierto', acierto + 'deg');
+  
+    var fallo = "{{angleFallos}}"
+    document.documentElement.style.setProperty('--fallo', fallo + 'deg');
+  
+    var blanco = "{{angleBlancos}}"
+    document.documentElement.style.setProperty('--blanco', blanco + 'deg');
+  
+  </script>
 
-  var fallo = "{{angleFallos}}"
-  document.documentElement.style.setProperty('--fallo', fallo + 'deg');
-
-  var blanco = "{{angleBlancos}}"
-  document.documentElement.style.setProperty('--blanco', blanco + 'deg');
-
-</script>
 {% endblock section2 %}

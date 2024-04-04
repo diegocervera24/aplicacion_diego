@@ -162,10 +162,18 @@ h6 {
 
 #eye1{
   cursor: pointer;
+  position: absolute;
+  right: 16px;
+  top: 73%;
+  transform: translateY(-50%);
 }
 
 #eye2{
   cursor: pointer;
+  position: absolute;
+  right: 16px;
+  top: 73%;
+  transform: translateY(-50%);
 }
 
 .close {
@@ -181,6 +189,8 @@ h6 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 10px;
+  
+  justify-items: center;
 }
 
 .breadcrumb-item{
