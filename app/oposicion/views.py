@@ -77,6 +77,7 @@ def eliminarTemario(request, id):
 def pruebas(request):
     nombreOposiciones = []
     user=request.user.username
+    print(user)
     form = PruebaForm(request.POST)
 
     all_oposicion = Oposicion.objects.all().order_by('NomOposicion')
@@ -99,7 +100,11 @@ def pruebas(request):
             
             if oposicion.count(oposicion[0]) == len(oposicion):
                 prueba = form.save()
-                json_file_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{prueba.NomPrueba}_{prueba.id}.json')
+                user_folder_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}')
+                if not os.path.exists(user_folder_path):
+                    os.makedirs(user_folder_path)
+              
+                json_file_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}',f'{prueba.NomPrueba}_{prueba.id}.json')
                 with open(json_file_path, 'w') as json_file:
                     json_file.write('')
             
@@ -143,7 +148,7 @@ def realizarPrueba(request, titulo):
     usuario_prueba = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdPrueba=id_prueba).values_list('IdTemario__NomUsuario__username', flat=True).first()
 
     if user == usuario_prueba:
-        ruta_archivo = os.path.join(settings.BASE_DIR, f'oposicion/static/oposicion/examenes/{titulo}.json')
+        ruta_archivo = os.path.join(settings.BASE_DIR, f'oposicion/static/oposicion/examenes/{user}/{titulo}.json')
         with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
             data = json.load(archivo)
             examen_data = data.get('examen', {})
@@ -165,7 +170,6 @@ def realizarPrueba(request, titulo):
                 hora_fin_dt = datetime.fromisoformat(hora_fin)
 
                 tiempo = (hora_fin_dt - hora_inicio_dt)
-                print(hora_inicio)
 
                 minutos = int(tiempo.total_seconds() // 60)
                 segundos = int(tiempo.total_seconds() % 60)
@@ -189,9 +193,14 @@ def realizarPrueba(request, titulo):
 
 @login_required(login_url="sign")
 def ver_pdf(request,id, path):
+    user=request.user.username
     temario = get_object_or_404(Temario, Archivo=path)
-    file_path = temario.Archivo.path
-    return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+    
+    if user == temario.NomUsuario_id:
+        file_path = temario.Archivo.path
+        return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+    else:
+        return redirect('temario') 
 
 @login_required(login_url="sign")
 def progreso(request):

@@ -2,6 +2,10 @@ from django.db import models
 from usuarios.models import User
 from django.core.validators import MinValueValidator
 
+def path_usuario_temario(instance, filename):
+    # instance.user es el usuario que sube el archivo
+    return f'{instance.NomUsuario.username}/{filename}'
+
 class Oposicion(models.Model):
     NomOposicion = models.CharField(null=False, max_length=50)
     OpoVisible = models.BooleanField(null=False, default=True)
@@ -17,7 +21,7 @@ class Temario(models.Model):
     NomTemario = models.CharField(null=False, max_length=50)
     NumPaginas = models.DecimalField(null=False, max_digits=4, decimal_places=0)
     TemVisible = models.BooleanField(null=False, default=True)
-    Archivo = models.FileField(upload_to='temario/', null=False, default='')
+    Archivo = models.FileField(upload_to=path_usuario_temario, null=False, default='')
     NomUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
     IdOposicion = models.ForeignKey(Oposicion, on_delete=models.CASCADE)
 
