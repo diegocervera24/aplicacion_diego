@@ -65,7 +65,7 @@ def mostrar_temario(request, id):
 def eliminarTemario(request, id):
     user=request.user.username
     usuario_temario = Temario.objects.all().filter(id=id).values_list('NomUsuario__username', flat=True).first()
-    print(usuario_temario)
+    
     if user == usuario_temario:
         elemento = get_object_or_404(Temario, id=id)
         elemento.TemVisible = False
@@ -77,13 +77,11 @@ def eliminarTemario(request, id):
 def pruebas(request):
     nombreOposiciones = []
     user=request.user.username
-    print(user)
     form = PruebaForm(request.POST)
 
-    all_oposicion = Oposicion.objects.all().order_by('NomOposicion')
     all_pruebas = Formado_por.objects.prefetch_related('IdTemario','IdPrueba').filter(IdTemario__NomUsuario__username=user,IdPrueba__PruVisible=True).values_list('IdTemario__IdOposicion', flat=True).distinct()
     all_temario = Temario.objects.all().filter(NomUsuario=user, TemVisible=True).values_list('id','NomTemario','IdOposicion').order_by('IdOposicion')
-    
+    all_oposicion = Oposicion.objects.all().filter(id__in=[temario[2] for temario in all_temario]).order_by('NomOposicion')
 
     for pruebas in all_pruebas:
         oposicion = Oposicion.objects.get(id=pruebas)
