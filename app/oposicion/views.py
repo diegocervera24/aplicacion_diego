@@ -12,6 +12,7 @@ from django.db.models.functions import Concat
 from django.http import FileResponse
 from datetime import datetime
 import decimal
+from . import ia
 
 def homepage(request):
      if request.user.is_authenticated:
@@ -76,6 +77,7 @@ def eliminarTemario(request, id):
 @login_required(login_url="sign")
 def pruebas(request):
     nombreOposiciones = []
+    lista_url = []
     user=request.user.username
     form = PruebaForm(request.POST)
 
@@ -98,17 +100,25 @@ def pruebas(request):
             
             if oposicion.count(oposicion[0]) == len(oposicion):
                 prueba = form.save()
+
+                for temario in temarios_seleccionados:
+                    Formado_por.objects.create(IdPrueba=prueba, IdTemario=temario)
+                    urls = Temario.objects.filter(id=temario.id).values_list('Archivo', flat=True)
+                    for url in urls:
+                        lista_url.append("media/" + url)
+                nombre = prueba.NomPrueba
+                preguntas = prueba.NumPreguntas
+                texto = ia.ver(lista_url,preguntas,nombre)
+
                 user_folder_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}')
                 if not os.path.exists(user_folder_path):
                     os.makedirs(user_folder_path)
               
                 json_file_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}',f'{prueba.NomPrueba}_{prueba.id}.json')
-                with open(json_file_path, 'w') as json_file:
-                    json_file.write('')
+                with open(json_file_path, 'w', encoding='utf-8') as json_file:
+                    json_file.write(texto)
             
-                for temario in temarios_seleccionados:
-                    Formado_por.objects.create(IdPrueba=prueba, IdTemario=temario)
-            
+                
             else:
                 context=messages.add_message(request=request,level=messages.ERROR, message="El temario escogido tiene que ser de la misma oposición.")
                 return render(request, 'oposicion/pruebas.html',{'all_oposicion':all_oposicion , 'all_temario':all_temario ,'all_pruebas':all_pruebas, 'nombreOposiciones':nombreOposiciones, 'form':form, 'context':context})
@@ -193,6 +203,7 @@ def realizarPrueba(request, titulo):
 def ver_pdf(request,id, path):
     user=request.user.username
     temario = get_object_or_404(Temario, Archivo=path)
+    print(temario)
     
     if user == temario.NomUsuario_id:
         file_path = temario.Archivo.path

@@ -3,3 +3,6 @@ psycopg2
 psycopg2-binary>=2.9
 crispy-bootstrap5
 PyPDF2<3.0
+langchain[all]
+openai
+pypdf
