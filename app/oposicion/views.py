@@ -108,7 +108,7 @@ def pruebas(request):
                         lista_url.append("media/" + url)
                 nombre = prueba.NomPrueba
                 preguntas = prueba.NumPreguntas
-                texto = ia.ver(lista_url,preguntas,nombre)
+                texto = ia.crear(lista_url,preguntas,nombre)
 
                 user_folder_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}')
                 if not os.path.exists(user_folder_path):
