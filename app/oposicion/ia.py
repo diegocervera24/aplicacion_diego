@@ -26,14 +26,14 @@ def crear(urls,preguntas,nombre):
     contenido_total = " ".join(documentos).encode('utf-8').decode('utf-8')
     lista_document = [Document(page_content=contenido_total)]
 
-    llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY,temperature=0.3)
+    llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY,temperature=0.4)
 
-    text_splitter = TokenTextSplitter(chunk_size=9000, chunk_overlap=100)
+    text_splitter = TokenTextSplitter(chunk_size=9500, chunk_overlap=100)
     lista_document = text_splitter.split_documents(lista_document)
 
     template1 =  """
                 Quiero que hagas un examen tipo test del texto que se encuentra entre comillas ''' '''.
-                La cantidad de preguntas que tienes que generar tiene que ser exactamente de 10 preguntas.
+                La cantidad de preguntas que tienes que generar tiene que ser exactamente de 9 preguntas.
                 La manera en que tienes que generar las preguntas y respuestas tiene que ser siguiendo el modelo
                 JSON que te indico a continuación.
                 
@@ -67,10 +67,8 @@ def crear(urls,preguntas,nombre):
 
     template2 =  """
                 Con todas preguntas que hay en el texto que se encuentra entre comillas ''' ''' , 
-                Selecciona exactamente {preguntas} preguntas, y genera una salida siguiendo el modelo JSON que te especifico
-                a continuación.
+                Selecciona exactamente {preguntas} preguntas, y haz un examen con estrictamente {preguntas}, siguiendo el formato JSON.
                 
-                '''{input}'''
 
                 El formato del JSON tiene que ser el siguiente:
 
@@ -85,20 +83,11 @@ def crear(urls,preguntas,nombre):
                             "respuesta_correcta": "respuesta 4"
                             }},
                             ...
-                            {{
-                            "id": {preguntas},
-                            "texto": "Pregunta",
-                            "opciones": ["respuesta 1", "respuesta 2", "respuesta 3", "respuesta 4"],
-                            "respuesta_correcta": "respuesta 4"
-                            }}
                         ]
                     }}
                 }}
 
-                En el titulo debe ir {nombre}, el id va a empezar en 1 y se va a ir incrementando de 1 en 1 hasta que llegue a {preguntas},
-                el texto va a ser la pregunta, las opciones van a ser 3 respuestas incorrectas y 1 correcta,
-                la correcta aparecerá tal cual en el campo respuesta_correcta, la respuesta correcta tiene que
-                ir cambiando, no siempre ser la respuesta 4.
+                '''{input}'''
 
                 """
     
@@ -108,6 +97,7 @@ def crear(urls,preguntas,nombre):
     for documento in lista_document:
         examen = cadena_fragmento.invoke({"input":documento,"preguntas":preguntas,"nombre":nombre})
         examenes.append(examen)
+    print(examenes)
 
     messages = prompt_template2.format(input=examenes, preguntas=preguntas, nombre=nombre)
     
