@@ -27,7 +27,7 @@ def temario(request):
     form = TemarioForm(request.POST, request.FILES)
     all_oposicion = Oposicion.objects.all().order_by('NomOposicion')
     all_temario = Temario.objects.all().prefetch_related('NomUsuario','IdOposicion').filter(NomUsuario__username=user,TemVisible=True).values_list('IdOposicion', flat=True).distinct()
- 
+    temarios = Temario.objects.all().filter(NomUsuario__username=user,TemVisible=True).values_list('NomTemario', 'IdOposicion_id')
 
     for temario in all_temario:
         oposicion = Oposicion.objects.get(id=temario)
@@ -35,6 +35,13 @@ def temario(request):
         nombreOposiciones.append((oposicion.id, oposicion.NomOposicion, cantidad))
 
     if request.method == 'POST':
+        NomTemario = request.POST.get('NomTemario')
+        IdOposicion = int(request.POST.get('IdOposicion'))
+        for nombre, id in temarios:
+            if(NomTemario == nombre and id == IdOposicion):
+                context=messages.add_message(request=request,level=messages.ERROR, message="Ya existe un fichero con el mismo nombre.")
+                return render(request, 'oposicion/temario.html',{'nombreOposiciones':nombreOposiciones, 'all_oposicion':all_oposicion, 'form':form,'context':context})
+            
         if request.FILES['Archivo'].name.endswith('.pdf'):
             pdf_file = request.FILES['Archivo']
             pdf_reader = PdfFileReader(pdf_file)
@@ -94,30 +101,50 @@ def pruebas(request):
     if request.method == 'POST':
         if form.is_valid():
             oposicion = []
+            NomPrueba = form.cleaned_data.get('NomPrueba')
+            NumPreguntas = form.cleaned_data.get('NumPreguntas')
             temarios_seleccionados = form.cleaned_data['temarios']
+
             for temario in temarios_seleccionados:
                 oposicion.append(temario.IdOposicion)
             
             if oposicion.count(oposicion[0]) == len(oposicion):
-                prueba = form.save()
-
                 for temario in temarios_seleccionados:
-                    Formado_por.objects.create(IdPrueba=prueba, IdTemario=temario)
                     urls = Temario.objects.filter(id=temario.id).values_list('Archivo', flat=True)
                     for url in urls:
                         lista_url.append("media/" + url)
-                nombre = prueba.NomPrueba
-                preguntas = prueba.NumPreguntas
-                texto = ia.crear(lista_url,preguntas,nombre)
+
+                texto = ia.crear(lista_url,NumPreguntas,NomPrueba)
 
                 user_folder_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}')
                 if not os.path.exists(user_folder_path):
                     os.makedirs(user_folder_path)
               
-                json_file_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}',f'{prueba.NomPrueba}_{prueba.id}.json')
+                json_file_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}',f'{NomPrueba}.json')
                 with open(json_file_path, 'w', encoding='utf-8') as json_file:
                     json_file.write(texto)
+                
+                with open(json_file_path, 'r', encoding='utf-8') as json_file:
+                    data = json.load(json_file)
+
+                    # Obtener la lista de preguntas
+                    preguntas = data["examen"]["preguntas"]
+
+                    # Obtener el último elemento de la lista de preguntas
+                    ultima_pregunta = preguntas[-1]
+
+                    # Obtener el valor del atributo "id" del último elemento
+                    ultimo_id = ultima_pregunta["id"]
             
+                prueba = form.save(commit=False)
+                prueba.NumPreguntas = ultimo_id
+                prueba.save()
+                
+                for temario in temarios_seleccionados:
+                    Formado_por.objects.create(IdPrueba=prueba, IdTemario=temario)
+                
+                nueva_ruta = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}', f'{prueba.NomPrueba}_{prueba.id}.json')
+                os.rename(json_file_path, nueva_ruta)
                 
             else:
                 context=messages.add_message(request=request,level=messages.ERROR, message="El temario escogido tiene que ser de la misma oposición.")
@@ -134,7 +161,7 @@ def mostrar_prueba(request, id):
     oposicion = get_object_or_404(Oposicion, id=id)
     pruebas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdTemario__IdOposicion=id,IdTemario__NomUsuario__username=user,IdPrueba__PruVisible=True).annotate(nombre_id=Concat(F('IdPrueba__NomPrueba'), Value('_'), F('IdPrueba__id'), output_field=CharField())).values_list('IdPrueba', 'IdPrueba__NomPrueba','nombre_id','IdPrueba__NumPreguntas').distinct()
     temario = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdTemario__IdOposicion=id,IdTemario__NomUsuario__username=user,IdPrueba__PruVisible=True).values_list('IdPrueba','IdTemario__NomTemario')
-
+    print(pruebas)
     return render(request, 'oposicion/mostrar_prueba.html', {'oposicion': oposicion,'pruebas': pruebas, 'temario':temario})
 
 @login_required(login_url="sign")

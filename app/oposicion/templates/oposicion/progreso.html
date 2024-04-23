@@ -91,11 +91,13 @@
 <div class="row bloque">
   {% if oposiciones %}
   {% for NomOposicion_Id in oposiciones %}
-    <div class="card" style="width: 18rem;">
-      <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
-      <div class="card-body">
-        <a class="card-text enlaceTemario" href="{% url 'progresoOposicion' NomOposicion_Id.1 %}">{{NomOposicion_Id.0}}</a>        
-      </div>
+    <div class="card card-view" style="width: 18rem;">
+      <a class="card-text enlaceTemario" href="{% url 'progresoOposicion' NomOposicion_Id.1 %}">
+        <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
+        <div class="card-body">
+          <p class="card-text enlaceTemario">{{NomOposicion_Id.0}}</p>        
+        </div>
+      </a>
     </div>
     {% endfor %}
     {% else %}

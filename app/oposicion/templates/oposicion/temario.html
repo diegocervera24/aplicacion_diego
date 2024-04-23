@@ -25,12 +25,14 @@
 <div class="row bloque">
   {% if nombreOposiciones %}
   {% for id, NomOposicion,cantidad in nombreOposiciones %}
-    <div class="card" style="width: 18rem;">
-      <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
-      <div class="card-body">
-        <a class="card-text enlaceTemario" href="{% url 'mostrar_temario' id=id %}">{{NomOposicion}}</a>
-        <p class="cantidad">{{cantidad}} documento/s</p>
-      </div>
+    <div class="card card-view" style="width: 18rem;">
+      <a class="card-text enlaceTemario" href="{% url 'mostrar_temario' id=id %}">
+        <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
+        <div class="card-body card-text">
+          <p class="card-text enlaceTemario">{{NomOposicion}}</p>
+          <p class="cantidad">{{cantidad}} documento/s</p>
+        </div>
+      </a>
     </div>
     {% endfor %}
     {% else %}

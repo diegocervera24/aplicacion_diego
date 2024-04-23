@@ -65,10 +65,31 @@
                         {% endif %}
 
                         <div class="contenedorBoton">
-                            <button type="submit" class="boton" name="editarPerfil">GUARDAR CAMBIOS</button>                            
+                            <button type="button" class="boton" name="editarPerfil" data-toggle="modal" data-target="#exampleModalCenter">GUARDAR CAMBIOS</button>                            
                             <a href="{% url 'perfil' %}" class="boton eliminar">CANCELAR CAMBIOS</a>
                         </div>
+
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLongTitle">Guardar cambios</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <h2 aria-hidden="true">&times;</h2>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  Desea guardar los cambios de su perfil?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="boton" name="editarPerfil" >CONFIRMAR</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                     </form>
+
+                    
                     
                 </div>
             </div>

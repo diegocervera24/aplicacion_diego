@@ -26,22 +26,23 @@ def crear(urls,preguntas,nombre):
     contenido_total = " ".join(documentos).encode('utf-8').decode('utf-8')
     lista_document = [Document(page_content=contenido_total)]
 
-    llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY,temperature=0.4)
+    llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY,temperature=0.3)
 
     text_splitter = TokenTextSplitter(chunk_size=9500, chunk_overlap=100)
     lista_document = text_splitter.split_documents(lista_document)
 
     template1 =  """
-                Quiero que hagas un examen tipo test del texto que se encuentra entre comillas ''' '''.
+                Quiero que hagas un examen tipo test exclusivamente del texto que se encuentra entre comillas ''' '''.
+                No inventes preguntas que no estén en el texto.
                 La cantidad de preguntas que tienes que generar tiene que ser exactamente de 9 preguntas.
-                La manera en que tienes que generar las preguntas y respuestas tiene que ser siguiendo el modelo
+                La manera en la que tienes que generar las preguntas y respuestas tiene que ser siguiendo el modelo
                 JSON que te indico a continuación.
                 
                  El formato del JSON tiene que ser el siguiente:
 
                 {{
                     "examen": {{
-                    "titulo": "Título del examen",
+                    "titulo": {nombre},
                     "preguntas": [
                             {{
                             "id": ,
@@ -55,8 +56,8 @@ def crear(urls,preguntas,nombre):
                 }}
 
                 En el titulo debe ir {nombre}, el id va a empezar en 1 y se va a ir incrementando de 1 en 1, 
-                el texto va a ser la pregunta, las opciones tienen que ser distintas y siempre van a ser 3 respuestas incorrectas y 1 correcta,
-                la correcta aparecerá tal cual en el campo respuesta_correcta.
+                el texto va a ser la pregunta, siempre tiene que haber 4 opciones distintas y siempre van a ser 3 respuestas incorrectas y 1 correcta,
+                la opción que sea correcta aparecerá tal cual en el campo respuesta_correcta.
 
                 '''{input}'''
                 
@@ -97,7 +98,6 @@ def crear(urls,preguntas,nombre):
     for documento in lista_document:
         examen = cadena_fragmento.invoke({"input":documento,"preguntas":preguntas,"nombre":nombre})
         examenes.append(examen)
-    print(examenes)
 
     messages = prompt_template2.format(input=examenes, preguntas=preguntas, nombre=nombre)
     

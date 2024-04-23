@@ -21,7 +21,7 @@ class Temario(models.Model):
     NomTemario = models.CharField(null=False, max_length=50)
     NumPaginas = models.DecimalField(null=False, max_digits=4, decimal_places=0)
     TemVisible = models.BooleanField(null=False, default=True)
-    Archivo = models.FileField(upload_to=path_usuario_temario, null=False, default='')
+    Archivo = models.FileField(upload_to=path_usuario_temario, null=False)
     NomUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
     IdOposicion = models.ForeignKey(Oposicion, on_delete=models.CASCADE)
 
@@ -33,7 +33,7 @@ class Temario(models.Model):
     
 class Prueba(models.Model):
     NomPrueba = models.CharField(null=False, max_length=50)
-    NumPreguntas = models.DecimalField(null=False, max_digits=3, decimal_places=0)
+    NumPreguntas = models.DecimalField(null=False, max_digits=2, decimal_places=0)
     PruVisible = models.BooleanField(null=False, default=True)
 
     def __str__(self):

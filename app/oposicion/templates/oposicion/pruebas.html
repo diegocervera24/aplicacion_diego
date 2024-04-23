@@ -25,12 +25,14 @@
 <div class="row bloque">
   {% if all_pruebas %}
   {% for id,NomOposicion,cantidad in nombreOposiciones %}
-    <div class="card" style="width: 18rem;">
-      <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
-      <div class="card-body">
-        <a class="card-text enlaceTemario" href="{% url 'mostrar_prueba' id=id %}">{{NomOposicion}}</a>
-        <p class="cantidad">{{cantidad}} prueba/s</p>
-      </div>
+    <div class="card card-view" style="width: 18rem;">
+      <a class="card-text enlaceTemario" href="{% url 'mostrar_prueba' id=id %}">
+        <img src="{% static 'oposicion/img/fondoOposicion.jpg' %}" class="card-img-top" alt="">
+        <div class="card-body">
+          <p class="card-text enlaceTemario">{{NomOposicion}}</p>
+          <p class="cantidad">{{cantidad}} prueba/s</p>
+        </div>
+      </a>
     </div>
     {% endfor %}
     {% else %}
@@ -80,15 +82,21 @@
           <div class="mb-3">
             <div class="mb-3">
               <label for="id_NumPreguntas" class="form-label">Número de preguntas
-                <p id="numero">55</p>
+                <p id="numero">18</p>
               </label>
-              <input type="range" class="form-range" min="10" max="100" name="NumPreguntas" required="" aria-invalid="true" id="id_NumPreguntas">
+              <input type="range" class="form-range" min="5" max="30" name="NumPreguntas" required="" aria-invalid="true" id="id_NumPreguntas">
             </div>
           </div>
       </div>
       <div class="modal-footer">
-        <button type="reset" class="botonCancelar" data-bs-dismiss="modal">CANCELAR</button>
-        <button type="submit" class="botonTemario" name="añadirTemario">AÑADIR</button>
+        <button type="reset" class="botonCancelar" id="botonCancelar" data-bs-dismiss="modal">CANCELAR</button>
+        <button type="submit" class="botonTemario" id="botonAñadir" name="añadirTemario">AÑADIR</button>
+        <div id="spinner" class="spinner-border text-info d-none" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div id="spinnerText" class="d-none">
+          Creando prueba con IA, esto puede tardar unos minutos, no actualice la página.
+        </div>
       </div>
     </form>
     </div>
@@ -106,5 +114,22 @@ function mostrar() {
     // Asignar a caja el valor de la barra
     cajaNumeral.innerHTML = barraDeTiempo.value;
 }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById('formtemario');
+      const spinner = document.getElementById('spinner');
+        const spinnerText = document.getElementById('spinnerText');
+      const botonCancelar = document.getElementById('botonCancelar');
+      const botonAñadir = document.getElementById('botonAñadir');
+
+      form.addEventListener('submit', function() {
+          // Ocultar botones y mostrar spinner
+          botonCancelar.style.display = 'none';
+          botonAñadir.style.display = 'none';
+          spinner.classList.remove('d-none');
+          spinnerText.classList.remove('d-none');
+      });
+  });
 </script>
 {% endblock section2 %}
