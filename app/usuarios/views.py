@@ -118,6 +118,7 @@ def eliminarPerfil(request):
      user = request.user.username
      usuario = User.objects.get(username=user)
      usuario.delete()
+     auth.logout(request)
      
      return redirect('sign')
 
