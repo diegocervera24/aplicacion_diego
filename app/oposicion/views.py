@@ -161,7 +161,6 @@ def mostrar_prueba(request, id):
     oposicion = get_object_or_404(Oposicion, id=id)
     pruebas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdTemario__IdOposicion=id,IdTemario__NomUsuario__username=user,IdPrueba__PruVisible=True).annotate(nombre_id=Concat(F('IdPrueba__NomPrueba'), Value('_'), F('IdPrueba__id'), output_field=CharField())).values_list('IdPrueba', 'IdPrueba__NomPrueba','nombre_id','IdPrueba__NumPreguntas').distinct()
     temario = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdTemario__IdOposicion=id,IdTemario__NomUsuario__username=user,IdPrueba__PruVisible=True).values_list('IdPrueba','IdTemario__NomTemario')
-    print(pruebas)
     return render(request, 'oposicion/mostrar_prueba.html', {'oposicion': oposicion,'pruebas': pruebas, 'temario':temario})
 
 @login_required(login_url="sign")
@@ -230,7 +229,6 @@ def realizarPrueba(request, titulo):
 def ver_pdf(request,id, path):
     user=request.user.username
     temario = get_object_or_404(Temario, Archivo=path)
-    print(temario)
     
     if user == temario.NomUsuario_id:
         file_path = temario.Archivo.path
