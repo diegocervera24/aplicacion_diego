@@ -240,7 +240,7 @@ def ver_pdf(request,id, path):
 def progreso(request):
     user=request.user.username
     idpruebas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False).values_list('IdPrueba__progreso__IdPrueba_id').distinct()
-    progresos = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False).values_list('IdPrueba__progreso__id')
+    progresos = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False).values_list('IdPrueba__progreso__id').distinct()
     oposiciones = set()
     pregAcertadasTotal = 0
     pregFalladasTotal = 0
@@ -316,7 +316,7 @@ def progreso(request):
 def progresoOposicion(request,id):
     user=request.user.username
     idpruebas = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False, IdTemario__IdOposicion=id).values_list('IdPrueba__progreso__IdPrueba_id').distinct()
-    progresos = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False, IdTemario__IdOposicion=id).values_list('IdPrueba__progreso__id')
+    progresos = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba','IdPrueba__progreso').filter(IdTemario__NomUsuario__username=user,IdPrueba__progreso__id__isnull=False, IdTemario__IdOposicion=id).values_list('IdPrueba__progreso__id').distinct()
     oposicion = get_object_or_404(Oposicion, id=id)
 
     pregAcertadasTotal = 0
