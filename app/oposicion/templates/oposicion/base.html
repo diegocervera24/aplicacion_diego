@@ -19,7 +19,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand titulo" href="#">TFG</a>
+          <a class="navbar-brand titulo">TFG</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -29,7 +29,7 @@
               {% endblock section1 %}
             </ul>
             <span class="nav-item dropdown menu">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link usuario dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {% if user.is_authenticated %}Hola, {{ user.username }}{% endif %}
                     </a>
                     <ul class="dropdown-menu navegacion" aria-labelledby="navbarDropdownMenuLink">
