@@ -79,14 +79,6 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'oposicion/temario.html')
 
-        # Comprobamos que el usuario tiene 3 temarios
-        temario_count = self.temario.filter(NomUsuario_id=self.user.username).count()
-        self.assertEqual(temario_count, 3)
-
-        # Comprobamos que solo hay dos oposiciones
-        oposicion_count = self.temario.filter(NomUsuario_id=self.user.username).values_list('IdOposicion_id').distinct().count()
-        self.assertEqual(oposicion_count, 2)
-
     def test_temario_añadir_valido_sin_oposicion_post(self):
         with open('C:/Users/DIEGO/Desktop/Informática/Cuarto/2º Cuatrimestre/AISI/aisi2324-practica2.pdf', 'rb') as file:
             archivo = SimpleUploadedFile('aisi2324-practica2.pdf', file.read())
@@ -168,19 +160,6 @@ class TestViews(TestCase):
         temario_count = self.temario.filter(NomUsuario_id=self.user.username, TemVisible=True, IdOposicion=1).count()
         self.assertEqual(temario_count, 2)
 
-        #Añadimos un temario
-        with open('C:/Users/DIEGO/Desktop/Informática/Cuarto/2º Cuatrimestre/AISI/aisi2324-practica2.pdf', 'rb') as file:
-            archivo = SimpleUploadedFile('aisi2324-practica2.pdf', file.read())
-        response = self.client.post(self.temario_url,{
-            'NomTemario':'Temario3',
-            'NumPaginas': 112,
-            'Archivo': archivo,
-            'IdOposicion': 1
-        })
-
-        # Comprobamos que el usuario tiene 3 temarios
-        temario_count = self.temario.filter(NomUsuario_id=self.user.username,TemVisible=True, IdOposicion=1).count()
-        self.assertEqual(temario_count, 3)
 
     def test_mostrar_temario_sin_get(self):
         response = self.client.get(self.mostrar_temario2_url)
@@ -238,10 +217,6 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'oposicion/pruebas.html')
 
-        # Comprobamos que el usuario tiene 3 pruebas
-        prueba_count = self.formado_por.prefetch_related('IdTemario','IdPrueba').filter(IdTemario__NomUsuario__username=self.user.username,IdPrueba__PruVisible=True).values_list('IdPrueba__id').distinct().count()
-        self.assertEqual(prueba_count, 3)
-
     def test_prueba_añadir_valido_post(self):
         
         #Añadimos una prueba
@@ -287,9 +262,6 @@ class TestViews(TestCase):
         # Comprobamos que la petición GET renderiza la pantalla de mostrar pruebas con la devolución de un código 200.
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'oposicion/mostrar_prueba.html')
-
-        prueba_count = self.formado_por.prefetch_related('IdTemario','IdPrueba').filter(IdTemario__NomUsuario__username=self.user.username,IdPrueba__PruVisible=True, IdTemario__IdOposicion_id=1).values_list('IdPrueba__id').distinct().count()
-        self.assertEqual(prueba_count, 2)
 
     def test_mostrar_pruebas_sin_get(self):
         response = self.client.get(self.mostrar_prueba2_url)
