@@ -51,7 +51,7 @@
 
 .titulo{
   display: flex;
-  margin-left: 100px;
+  margin-left: 10%;
 }
 
 .nav-link{
@@ -171,8 +171,19 @@ h6 {
 
 .contenedorBoton{
   margin-top: 20px;
-  display: flex;
-  justify-content: space-between
+  display: grid;
+  justify-content: space-between;
+  text-align: center;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 560px){
+  .contenedorBoton{
+    grid-template-columns: repeat(1, 1fr);
+    
+  }
+  .eliminar{
+    margin-top: 5px;
+  }
 }
 
 #ocultar{
@@ -210,6 +221,17 @@ h6 {
   grid-column-gap: 10px;
   
   justify-items: center;
+}
+@media (max-width: 1100px){
+  .bloque{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 760px){
+  .bloque{
+    grid-template-columns: repeat(1, 1fr);
+    margin: 0;
+  }
 }
 
 .breadcrumb-item{
@@ -315,7 +337,7 @@ h6 {
   margin: 0;
   flex-direction: column;
   margin-top: 20px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .sidebar {
@@ -324,6 +346,7 @@ h6 {
   overflow-y: auto;
   text-align: center;
   margin-top: 50px;
+  margin-right: 10px;
   display: inline-table;
   width: 100%;
 
@@ -358,6 +381,11 @@ h6 {
 
 .respuesta{
   margin-left: 20px;
+  width: 75%;
+}
+
+.finish{
+  margin-bottom: 10px;
 }
 
 .green{
@@ -421,10 +449,23 @@ h6 {
 }
 
 .all{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
 }
+
+@media(max-width: 895px){
+  .all{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 460px){
+  .all{
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
 .circle-wrap {
   display: grid;
   grid-template-columns: repeat(1, 160px);
@@ -535,6 +576,14 @@ h6 {
 
 .general{
   margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media(max-width: 775px){
+  .general{
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .tit{
@@ -548,6 +597,11 @@ h6 {
   .container{
       max-width: 1520px;
   }
+}
+
+.container{
+  max-width: 100%;
+  overflow-x: auto;
 }
   
 #spinnerText {
