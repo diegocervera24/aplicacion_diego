@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from . forms import CreateUserForm, LoginForm, ProfileForm
-
+import os, shutil
+from django.conf import settings
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from usuarios.models import User
+from oposicion.models import Prueba, Formado_por
 from django.contrib.auth.decorators import login_required
 
 def sign(request):
@@ -117,7 +119,19 @@ def editarPerfil(request):
 def eliminarPerfil(request):
      user = request.user.username
      usuario = User.objects.get(username=user)
+     pruebas_id = Formado_por.objects.prefetch_related('IdTemario','IdPrueba').filter(IdTemario__NomUsuario__username=user).values_list('IdPrueba_id')
+     prueba = Prueba.objects.filter(id__in=pruebas_id)
+     path_examenes = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}')
+     path_temario = os.path.join(settings.MEDIA_ROOT, f'{user}')
+     prueba.delete()
      usuario.delete()
+
+     if os.path.exists(path_temario):
+        shutil.rmtree(path_temario, ignore_errors=True)
+        
+     if os.path.exists(path_examenes):
+        shutil.rmtree(path_examenes, ignore_errors=True)
+     
      auth.logout(request)
      
      return redirect('sign')

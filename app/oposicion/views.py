@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from PyPDF2 import PdfFileReader
@@ -73,11 +72,18 @@ def mostrar_temario(request, id):
 def eliminarTemario(request, id):
     user=request.user.username
     usuario_temario = Temario.objects.all().filter(id=id).values_list('NomUsuario__username', flat=True).first()
+    num_pruebas = Formado_por.objects.all().filter(IdTemario_id=id).count()
+    archivo = Temario.objects.get(id=id)
     
-    if user == usuario_temario:
+    if user == usuario_temario and num_pruebas > 0:
         elemento = get_object_or_404(Temario, id=id)
         elemento.TemVisible = False
         elemento.save()
+    else:
+        file_path = os.path.join(settings.MEDIA_ROOT, archivo.Archivo.name)
+        temario = Temario.objects.get(id=id)
+        temario.delete()
+        os.remove(file_path)
 
     return redirect ('temario')
 
@@ -167,10 +173,17 @@ def mostrar_prueba(request, id):
 def eliminarPrueba(request, id):
     user=request.user.username
     usuario_prueba = Formado_por.objects.all().prefetch_related('IdTemario','IdPrueba').filter(IdPrueba=id).values_list('IdTemario__NomUsuario__username', flat=True).first()
-    if user == usuario_prueba:
+    num_progreso = Progreso.objects.all().filter(IdPrueba=id).count()
+    prueba = Prueba.objects.get(id=id)
+    json_file_path = os.path.join(settings.STATICFILES_DIRS[1], 'oposicion', 'examenes', f'{user}',f'{prueba.NomPrueba}_{prueba.id}.json')
+
+    if user == usuario_prueba and num_progreso > 0:
         elemento = get_object_or_404(Prueba, id=id)
         elemento.PruVisible = False
         elemento.save()
+    else:
+        prueba.delete()
+        os.remove(json_file_path)
 
     return redirect ('pruebas')
     
