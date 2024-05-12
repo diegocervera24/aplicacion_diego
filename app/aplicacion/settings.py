@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        #'HOST': 'db',
+        'HOST': 'db', #Comentar linea para ejecutarlo en local
         'PORT': 5432
     }
 }
@@ -154,4 +154,4 @@ EMAIL_HOST_USER = 'diegocervera24@gmail.com'
 EMAIL_HOST_PASSWORD = 'hadc aceq gczy aimw'
 
 MEDIA_URL = '/archivos/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

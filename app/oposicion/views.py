@@ -12,6 +12,7 @@ from django.http import FileResponse
 from datetime import datetime
 import decimal
 from . import ia
+from aplicacion.settings import MEDIA_ROOT
 
 def homepage(request):
      if request.user.is_authenticated:
@@ -118,7 +119,7 @@ def pruebas(request):
                 for temario in temarios_seleccionados:
                     urls = Temario.objects.filter(id=temario.id).values_list('Archivo', flat=True)
                     for url in urls:
-                        lista_url.append("media/" + url)
+                        lista_url.append(MEDIA_ROOT + url)
 
                 texto = ia.crear(lista_url,NumPreguntas,NomPrueba)
 
