@@ -7,7 +7,7 @@ def path_usuario_temario(instance, filename):
     return f'{instance.NomUsuario.username}/{filename}'
 
 class Oposicion(models.Model):
-    NomOposicion = models.CharField(null=False, max_length=50)
+    NomOposicion = models.CharField(null=False, max_length=100)
     OpoVisible = models.BooleanField(null=False, default=True)
 
     def __str__(self):
